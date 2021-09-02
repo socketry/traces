@@ -26,6 +26,21 @@ module Trace
 	module Backend
 		private
 		
+		# Increment or decrement (part of a count) a named metric.
+		def adjust_metric(name, amount, **attributes)
+			# No-op.
+		end
+		
+		# Record a specific value (part of a distribution) for a named metric.
+		def record_metric(name, value, **attributes)
+			# No-op.
+		end
+		
+		# Record a specific value (part of a gauge) for a named metric.
+		def observe_metric(name, value, **attributes)
+			# No-op.
+		end
+		
 		# Provides a backend that writes data to OpenTelemetry.
 		# See <https://github.com/open-telemetry/opentelemetry-ruby> for more details.
 		TRACER = ::OpenTelemetry.tracer_provider.tracer(Trace, Trace::VERSION)
@@ -45,7 +60,11 @@ module Trace
 			span = TRACER.start_span(name, with_parent: parent, attributes: attributes)
 			
 			begin
-				yield
+				if block.arity.zero?
+					yield
+				else
+					yield trace_span_context(span)
+				end
 			rescue Exception => error
 				span&.record_exception(error)
 				span&.status = ::OpenTelemetry::Trace::Status.error("Unhandled exception of type: #{error.class}")
@@ -53,6 +72,18 @@ module Trace
 			ensure
 				span&.finish
 			end
+		end
+		
+		def trace_span_context(span)
+			context = span.context
+			
+			return Context.new(
+				context.trace_id,
+				context.span_id,
+				context.trace_flags,
+				context.tracestate,
+				remote: context.remote?
+			)
 		end
 	end
 end

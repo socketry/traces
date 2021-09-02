@@ -26,7 +26,26 @@ module Trace
 	module Backend
 		private
 		
-		def trace(name, parent: nil, **attributes, &block)
+		# Increment or decrement (part of a count) a named metric.
+		def adjust_metric(name, amount, **attributes)
+			if amount > 0
+				Console.logger.info(self, "#{name} +#{amount}")
+			else
+				Console.logger.info(self, "#{name} -#{amount}")
+			end
+		end
+		
+		# Record a specific value (part of a distribution) for a named metric.
+		def record_metric(name, value, **attributes)
+			Console.logger.info(self, "#{name} << #{value}")
+		end
+		
+		# Record a specific value (part of a gauge) for a named metric.
+		def observe_metric(name, value, **attributes)
+			Console.logger.info(self, "#{name} = #{value}")
+		end
+		
+		def trace(name, parent = nil, **attributes, &block)
 			Console.logger.measure(self, name, parent: parent, **attributes) do
 				begin
 					yield

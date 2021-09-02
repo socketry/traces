@@ -26,7 +26,22 @@ module Trace
 	module Backend
 		private
 		
-		def trace(name, parent: nil, **attributes, &block)
+		# Increment or decrement (part of a count) a named metric.
+		def adjust_metric(name, amount, **attributes)
+			# No-op.
+		end
+		
+		# Record a specific value (part of a distribution) for a named metric.
+		def record_metric(name, value, **attributes)
+			# No-op.
+		end
+		
+		# Record a specific value (part of a gauge) for a named metric.
+		def observe_metric(name, value, **attributes)
+			# No-op.
+		end
+		
+		def trace(name, parent = nil, **attributes, &block)
 			yield
 		end
 	end
