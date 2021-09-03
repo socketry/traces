@@ -20,31 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require_relative 'backend'
-
 module Trace
-	module Provider
-		def trace_provider
-			@trace_provider ||= Module.new
-		end
-	end
-	
-	# Bail out if there is no backend configured.
-	if Trace.const_defined?(:Backend)
-		def self.Provider(klass, &block)
-			klass.extend(Provider)
-			klass.prepend(Backend)
-			
-			provider = klass.trace_provider
-			provider.prepend(Backend)
-			
-			klass.prepend(provider)
-			
-			provider.module_exec(&block)
-		end
-	else
-		def self.Provider(klass, &block)
-			# Tracing disabled.
+	def self.require_backend(env = ENV)
+		if backend = env['TRACE_BACKEND']
+			begin
+				path = File.join('backend', backend)
+				require_relative(path)
+			rescue LoadError
+				require(backend)
+			end
 		end
 	end
 end
+
+Trace.require_backend
