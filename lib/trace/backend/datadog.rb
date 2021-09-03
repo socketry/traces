@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'console'
+require 'ddtrace'
 
 module Trace
 	module Backend
@@ -28,14 +28,14 @@ module Trace
 		
 		def trace(name, parent = nil, **attributes, &block)
 			if parent
-				parent = Datadog::Context.new(
+				parent = ::Datadog::Context.new(
 					trace_id: parent.trace_id,
 					span_id: parent.span_id,
 					sampled: parent.sampled?,
 				)
 			end
 			
-			Datadog.tracer.trace(name, child_of: parent, tags: attributes) do |span|
+			::Datadog.tracer.trace(name, child_of: parent, tags: attributes) do |span|
 				begin
 					if block.arity.zero?
 						yield
