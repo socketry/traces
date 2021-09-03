@@ -20,54 +20,48 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'opentelemetry/sdk'
+require 'console'
 
 module Trace
 	module Backend
 		private
 		
-		# Provides a backend that writes data to OpenTelemetry.
-		# See <https://github.com/open-telemetry/opentelemetry-ruby> for more details.
-		TRACER = ::OpenTelemetry.tracer_provider.tracer(Trace, Trace::VERSION)
-		
 		def trace(name, parent = nil, **attributes, &block)
 			if parent
-				# Convert it to the required object:
-				parent = ::OpenTelemetry::Trace::SpanContext.new(
+				parent = Datadog::Context.new(
 					trace_id: parent.trace_id,
 					span_id: parent.span_id,
-					trace_flags: ::OpenTelemetry::Trace::TraceFlags.from_byte(parent.flags),
-					tracestate: parent.state,
-					remote: parent.remote?
+					sampled: parent.sampled?,
 				)
 			end
 			
-			span = TRACER.start_span(name, with_parent: parent, attributes: attributes)
-			
-			begin
-				if block.arity.zero?
-					yield
-				else
-					yield trace_span_context(span)
+			Datadog.tracer.trace(name, child_of: parent, tags: attributes) do |span|
+				begin
+					if block.arity.zero?
+						yield
+					else
+						yield trace_span_context(span)
+					end
+				rescue Exception => error
+					Console.logger.error(self, error)
+					raise
 				end
-			rescue Exception => error
-				span&.record_exception(error)
-				span&.status = ::OpenTelemetry::Trace::Status.error("Unhandled exception of type: #{error.class}")
-				raise
-			ensure
-				span&.finish
 			end
 		end
 		
 		def trace_span_context(span)
-			context = span.context
+			flags = 0
+			
+			if span.sampled
+				flags |= Context::SAMPLED
+			end
 			
 			return Context.new(
-				context.trace_id,
-				context.span_id,
-				context.trace_flags,
-				context.tracestate,
-				remote: context.remote?
+				span.trace_id,
+				span.span_id,
+				flags,
+				nil,
+				remote: false
 			)
 		end
 	end
