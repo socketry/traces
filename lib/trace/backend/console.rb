@@ -33,7 +33,7 @@ module Trace
 		end
 		
 		def trace(name, attributes: nil, &block)
-			Console.logger.measure(self, name, **attributes) do
+			Console.logger.measure(self, name, attributes: attributes) do
 				yield Span.new
 			end
 		end
