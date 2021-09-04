@@ -23,12 +23,8 @@
 module Trace
 	def self.require_backend(env = ENV)
 		if backend = env['TRACE_BACKEND']
-			begin
-				path = File.join('backend', backend)
-				require_relative(path)
-			rescue LoadError
-				require(backend)
-			end
+			path = File.join('backend', backend)
+			require_relative(path)
 		end
 	end
 end

@@ -6,6 +6,7 @@ gemspec
 
 group :test do
 	gem "console"
+	gem "ddtrace"
 end
 
 group :maintenance, optional: true do

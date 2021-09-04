@@ -26,14 +26,9 @@ module Trace
 	module Backend
 		private
 		
-		def trace(name, parent = nil, **attributes, &block)
-			Console.logger.measure(self, name, parent: parent, **attributes) do
-				begin
-					yield
-				rescue Exception => error
-					Console.logger.error(self, error)
-					raise
-				end
+		def trace(name, parent = nil, attributes: nil, &block)
+			Console.logger.measure(self, name, **attributes) do
+				yield
 			end
 		end
 	end

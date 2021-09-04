@@ -22,12 +22,13 @@
 
 require "bundler/setup"
 
-require 'trace'
-
-if backend_name = ENV['TRACE_BACKEND']
-	require(File.join("trace/backend/#{backend_name}"))
-else
-	require "trace/backend/console"
+if backend = ENV['TRACE_BACKEND']
+	begin
+		path = File.join('backend', backend)
+		require_relative(path)
+	rescue LoadError
+		# Ignore.
+	end
 end
 
 RSpec.configure do |config|

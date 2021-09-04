@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require_relative '../context'
+
 require 'opentelemetry/sdk'
 
 module Trace
@@ -30,7 +32,7 @@ module Trace
 		# See <https://github.com/open-telemetry/opentelemetry-ruby> for more details.
 		TRACER = ::OpenTelemetry.tracer_provider.tracer(Trace, Trace::VERSION)
 		
-		def trace(name, parent = nil, **attributes, &block)
+		def trace(name, parent = nil, attributes: nil, &block)
 			if parent
 				# Convert it to the required object:
 				parent = ::OpenTelemetry::Trace::SpanContext.new(

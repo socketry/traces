@@ -19,17 +19,22 @@ jobs:
           - "3.0"
         
         experimental: [false]
-        env: [""]
+        env:
+          - "TRACE_BACKEND=console"
+          - "TRACE_BACKEND=datadog"
         
         include:
           - os: ubuntu
             ruby: truffleruby
+            env: "TRACE_BACKEND=test"
             experimental: true
           - os: ubuntu
             ruby: jruby
+            env: "TRACE_BACKEND=test"
             experimental: true
           - os: ubuntu
             ruby: head
+            env: "TRACE_BACKEND=test"
             experimental: true
     
     steps:

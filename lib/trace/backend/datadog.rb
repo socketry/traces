@@ -20,13 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require_relative '../context'
+
 require 'ddtrace'
 
 module Trace
 	module Backend
 		private
 		
-		def trace(name, parent = nil, **attributes, &block)
+		def trace(name, parent = nil, attributes: nil, &block)
 			if parent
 				parent = ::Datadog::Context.new(
 					trace_id: parent.trace_id,

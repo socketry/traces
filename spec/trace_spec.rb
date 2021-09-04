@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require 'trace/provider'
+
 class MyClass
 	def my_method(argument)
 	end
@@ -27,7 +29,7 @@ end
 
 Trace::Provider(MyClass) do
 	def my_method(argument)
-		trace('my_method', argument: argument) {super}
+		trace('my_method', attributes: {argument: argument}) {super}
 	end
 end
 
