@@ -28,6 +28,14 @@ module Trace
 	module Backend
 		private
 		
+		module SpanInterface
+			def []= key, value
+				set_tag(key, value)
+			end
+		end
+		
+		::Datadog::Span.prepend(SpanInterface)
+		
 		def trace(name, attributes: nil, &block)
 			::Datadog.tracer.trace(name, tags: attributes, &block)
 		end
