@@ -33,35 +33,24 @@ module Trace
 		TRACER = ::OpenTelemetry.tracer_provider.tracer(Trace, Trace::VERSION)
 		
 		def trace(name, parent = nil, attributes: nil, &block)
-			if parent
-				# Convert it to the required object:
-				parent = ::OpenTelemetry::Trace::SpanContext.new(
-					trace_id: parent.trace_id,
-					span_id: parent.span_id,
-					trace_flags: ::OpenTelemetry::Trace::TraceFlags.from_byte(parent.flags),
-					tracestate: parent.state,
-					remote: parent.remote?
+			TRACER.in_span(name, attributes: attributes, &block)
+		end
+		
+		def trace_context=(context)
+			if context
+				::OpenTelemetry::Context.attach(
+					::OpenTelemetry::Trace::SpanContext.new(
+						trace_id: parent.trace_id,
+						span_id: parent.span_id,
+						trace_flags: ::OpenTelemetry::Trace::TraceFlags.from_byte(parent.flags),
+						tracestate: parent.state,
+						remote: parent.remote?
+					)
 				)
-			end
-			
-			span = TRACER.start_span(name, with_parent: parent, attributes: attributes)
-			
-			begin
-				if block.arity.zero?
-					yield
-				else
-					yield trace_span_context(span)
-				end
-			rescue Exception => error
-				span&.record_exception(error)
-				span&.status = ::OpenTelemetry::Trace::Status.error("Unhandled exception of type: #{error.class}")
-				raise
-			ensure
-				span&.finish
 			end
 		end
 		
-		def trace_span_context(span)
+		def trace_context(span)
 			context = span.context
 			
 			return Context.new(

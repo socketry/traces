@@ -28,21 +28,17 @@ module Trace
 	module Backend
 		private
 		
-		def trace(name, parent = nil, attributes: nil, &block)
-			if parent
-				parent = parent.span || ::Datadog::Context.new(
-					trace_id: parent.trace_id,
-					span_id: parent.span_id,
-					sampled: parent.sampled?,
+		def trace(name, attributes: nil, &block)
+			::Datadog.tracer.trace(name, tags: attributes, &block)
+		end
+		
+		def trace_context=(context)
+			if context
+				::Datadog.tracer.provider.context = ::Datadog::Context.new(
+					trace_id: context.trace_id,
+					span_id: context.span_id,
+					sampled: context.sampled?,
 				)
-			end
-			
-			::Datadog.tracer.trace(name, child_of: parent, tags: attributes) do |span|
-				if block.arity.zero?
-					yield
-				else
-					yield trace_context(span)
-				end
 			end
 		end
 		

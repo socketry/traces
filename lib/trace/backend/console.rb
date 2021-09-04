@@ -26,14 +26,24 @@ module Trace
 	module Backend
 		private
 		
-		def trace(name, parent = nil, attributes: nil, &block)
-			Console.logger.measure(self, name, **attributes) do
-				yield
+		class Span
+			def []= key, value
+				Console.logger.info(self, "#{key} = #{value}")
 			end
 		end
 		
+		def trace(name, attributes: nil, &block)
+			Console.logger.measure(self, name, **attributes) do
+				yield Span.new
+			end
+		end
+		
+		def trace_context=(context)
+			# nil
+		end
+		
 		def trace_context(span = nil)
-			nil
+			# nil
 		end
 	end
 end
