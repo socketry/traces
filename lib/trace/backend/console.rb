@@ -31,5 +31,9 @@ module Trace
 				yield
 			end
 		end
+		
+		def trace_context(span = nil)
+			nil
+		end
 	end
 end

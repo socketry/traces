@@ -27,7 +27,7 @@ module Trace
 		def self.parse(parent, state = nil)
 			version, trace_id, parent_id, flags = parent.split('-')
 			
-			if version = '00'
+			if version == '00'
 				flags = Integer(trace_flags, 16)
 				
 				if state.is_a?(String)
@@ -44,18 +44,20 @@ module Trace
 		
 		SAMPLED = 0x01
 		
-		def initialize(trace_id, parent_id, flags, state = nil, remote: false)
+		def initialize(trace_id, parent_id, flags, state = nil, remote: false, span: nil)
 			@trace_id = trace_id
 			@parent_id = span_id
 			@flags = flags
 			@state = state
 			@remote = remote
+			@span = span
 		end
 		
 		attr :trace_id
 		attr :span_id
 		attr :flags
 		attr :state
+		attr :span
 		
 		def sampled?
 			@flags & SAMPLED

@@ -30,7 +30,7 @@ module Trace
 		
 		def trace(name, parent = nil, attributes: nil, &block)
 			if parent
-				parent = ::Datadog::Context.new(
+				parent = parent.span || ::Datadog::Context.new(
 					trace_id: parent.trace_id,
 					span_id: parent.span_id,
 					sampled: parent.sampled?,
@@ -38,20 +38,17 @@ module Trace
 			end
 			
 			::Datadog.tracer.trace(name, child_of: parent, tags: attributes) do |span|
-				begin
-					if block.arity.zero?
-						yield
-					else
-						yield trace_span_context(span)
-					end
-				rescue Exception => error
-					Console.logger.error(self, error)
-					raise
+				if block.arity.zero?
+					yield
+				else
+					yield trace_context(span)
 				end
 			end
 		end
 		
-		def trace_span_context(span)
+		def trace_context(span = Datadog.tracer.active_span)
+			return nil unless span
+			
 			flags = 0
 			
 			if span.sampled
@@ -63,7 +60,8 @@ module Trace
 				span.span_id,
 				flags,
 				nil,
-				remote: false
+				remote: false,
+				span: span,
 			)
 		end
 	end
