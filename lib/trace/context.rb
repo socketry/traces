@@ -20,9 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require 'securerandom'
+
 module Trace
-	# A generic representation of the current span.
-	# We follow the <https://github.com/openzipkin/b3-propagation> model.
+	# A generic representation of the current tracing context.
 	class Context
 		def self.parse(parent, state = nil)
 			version, trace_id, parent_id, flags = parent.split('-')
@@ -42,15 +43,22 @@ module Trace
 			end
 		end
 		
+		def self.local(flags = 0, **options)
+			self.new(SecureRandom.hex(16), SecureRandom.hex(8), flags, options)
+		end
+		
 		SAMPLED = 0x01
 		
-		def initialize(trace_id, parent_id, flags, state = nil, remote: false, span: nil)
+		def initialize(trace_id, parent_id, flags, state = nil, remote: false)
 			@trace_id = trace_id
 			@parent_id = span_id
 			@flags = flags
 			@state = state
 			@remote = remote
-			@span = span
+		end
+		
+		def nested(flags = @flags)
+			Context.new(@trace_id, SecureRandom.hex(8), flags, @state, remote: @remote)
 		end
 		
 		attr :trace_id

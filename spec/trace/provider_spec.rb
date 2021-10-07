@@ -20,53 +20,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require_relative '../context'
+require 'trace/provider'
 
-require 'ddtrace'
-
-module Trace
-	module Backend
-		private
-		
-		module SpanInterface
-			def []= key, value
-				set_tag(key, value)
+RSpec.describe Trace::Provider do
+	let(:klass) {Class.new}
+	
+	it "can yield span" do
+		Trace::Provider(klass) do
+			def span
+				trace('test.span') do |span|
+					return span
+				end
 			end
 		end
 		
-		::Datadog::Span.prepend(SpanInterface)
+		span = klass.new.span
 		
-		def trace(name, attributes: {}, &block)
-			::Datadog.tracer.trace(name, tags: attributes, &block)
-		end
-		
-		def trace_context=(context)
-			if context
-				::Datadog.tracer.provider.context = ::Datadog::Context.new(
-					trace_id: context.trace_id,
-					span_id: context.span_id,
-					sampled: context.sampled?,
-				)
-			end
-		end
-		
-		def trace_context(span = Datadog.tracer.active_span)
-			return nil unless span
-			
-			flags = 0
-			
-			if span.sampled
-				flags |= Context::SAMPLED
-			end
-			
-			return Context.new(
-				span.trace_id,
-				span.span_id,
-				flags,
-				nil,
-				remote: false,
-				span: span,
-			)
-		end
+		expect(span).to respond_to(:[]=)
 	end
 end
