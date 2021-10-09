@@ -4,15 +4,15 @@ As the author of many libraries which would benefit from tracing, there are few 
 
 We implement a tracing interface which is largely consistent with the [W3C Trace Context Specification](https://github.com/w3c/trace-context).
 
+[![Development Status](https://github.com/socketry/traces/workflows/Development/badge.svg)](https://github.com/socketry/traces/actions?workflow=Development)
+
 ## Installation
 
-```
-bundle add trace
-```
+    bundle add trace
 
 ## Usage
 
-```ruby
+``` ruby
 require 'trace'
 
 class MyClass
