@@ -24,8 +24,8 @@ require_relative 'backend'
 
 module Traces
 	module Provider
-		def trace_provider
-			@trace_provider ||= Module.new
+		def traces_provider
+			@traces_provider ||= Module.new
 		end
 	end
 	
@@ -35,7 +35,7 @@ module Traces
 			klass.extend(Provider)
 			klass.prepend(Backend)
 			
-			provider = klass.trace_provider
+			provider = klass.traces_provider
 			provider.prepend(Backend)
 			
 			klass.prepend(provider)
