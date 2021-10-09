@@ -20,29 +20,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'trace/provider'
+require_relative 'backend'
 
-class MyClass
-	def my_method(argument)
+module Traces
+	module Provider
+		def trace_provider
+			@trace_provider ||= Module.new
+		end
 	end
-end
-
-Trace::Provider(MyClass) do
-	def my_method(argument)
-		trace('my_method', attributes: {argument: argument}) {super}
-	end
-end
-
-RSpec.describe Trace do
-	it "has a version number" do
-		expect(Trace::VERSION).not_to be nil
-	end
-
-	it "can invoke trace wrapper" do
-		instance = MyClass.new
-		
-		expect(instance).to receive(:trace).and_call_original
-		
-		instance.my_method(10)
+	
+	# Bail out if there is no backend configured.
+	if Traces.const_defined?(:Backend)
+		def self.Provider(klass, &block)
+			klass.extend(Provider)
+			klass.prepend(Backend)
+			
+			provider = klass.trace_provider
+			provider.prepend(Backend)
+			
+			klass.prepend(provider)
+			
+			provider.module_exec(&block)
+		end
+	else
+		def self.Provider(klass, &block)
+			# Tracing disabled.
+		end
 	end
 end

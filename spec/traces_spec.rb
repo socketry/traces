@@ -20,5 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require_relative 'trace/version'
-require_relative 'trace/provider'
+require 'traces/provider'
+
+class MyClass
+	def my_method(argument)
+	end
+end
+
+Traces::Provider(MyClass) do
+	def my_method(argument)
+		trace('my_method', attributes: {argument: argument}) {super}
+	end
+end
+
+RSpec.describe Traces do
+	it "has a version number" do
+		expect(Traces::VERSION).not_to be nil
+	end
+
+	it "can invoke trace wrapper" do
+		instance = MyClass.new
+		
+		expect(instance).to receive(:trace).and_call_original
+		
+		instance.my_method(10)
+	end
+end

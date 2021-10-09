@@ -20,13 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-module Trace
+module Traces
 	def self.require_backend(env = ENV)
-		if backend = env['TRACE_BACKEND']
+		if backend = env['TRACES_BACKEND']
 			path = File.join('backend', backend)
 			require_relative(path)
 		end
 	end
 end
 
-Trace.require_backend
+Traces.require_backend

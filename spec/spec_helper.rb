@@ -22,7 +22,7 @@
 
 require "bundler/setup"
 
-if backend = ENV['TRACE_BACKEND']
+if backend = ENV['TRACES_BACKEND']
 	begin
 		path = File.join('backend', backend)
 		require_relative(path)

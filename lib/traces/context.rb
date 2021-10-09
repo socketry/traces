@@ -20,6 +20,53 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-module Trace
-	VERSION = "0.5.0"
+module Traces
+	# A generic representation of the current span.
+	# We follow the <https://github.com/openzipkin/b3-propagation> model.
+	class Context
+		def self.parse(parent, state = nil)
+			version, trace_id, parent_id, flags = parent.split('-')
+			
+			if version = '00'
+				flags = Integer(trace_flags, 16)
+				
+				if state.is_a?(String)
+					state = state.split(',')
+				end
+				
+				if state
+					state = state.map{|item| item.split('=')}
+				end
+				
+				self.new(trace_id, parent_id, flags, state)
+			end
+		end
+		
+		SAMPLED = 0x01
+		
+		def initialize(trace_id, parent_id, flags, state = nil, remote: false)
+			@trace_id = trace_id
+			@parent_id = span_id
+			@flags = flags
+			@state = state
+			@remote = remote
+		end
+		
+		attr :trace_id
+		attr :span_id
+		attr :flags
+		attr :state
+		
+		def sampled?
+			@flags & SAMPLED
+		end
+		
+		def remote?
+			@remote
+		end
+		
+		def to_s
+			"00-#{@trace_id}-#{@parent_id}-#{@flags.to_s(16)}"
+		end
+	end
 end

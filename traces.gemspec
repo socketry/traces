@@ -1,9 +1,9 @@
 
-require_relative "lib/trace/version"
+require_relative "lib/traces/version"
 
 Gem::Specification.new do |spec|
-	spec.name = "trace"
-	spec.version = Trace::VERSION
+	spec.name = "traces"
+	spec.version = Traces::VERSION
 	
 	spec.summary = "Application instrumentation and tracing."
 	spec.authors = ["Samuel Williams"]

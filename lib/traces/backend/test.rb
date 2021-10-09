@@ -22,7 +22,7 @@
 
 require 'console'
 
-module Trace
+module Traces
 	module Backend
 		private
 		
