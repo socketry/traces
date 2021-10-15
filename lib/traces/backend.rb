@@ -23,8 +23,7 @@
 module Traces
 	def self.require_backend(env = ENV)
 		if backend = env['TRACES_BACKEND']
-			path = File.join('backend', backend)
-			require_relative(path)
+			require(backend)
 		end
 	end
 end

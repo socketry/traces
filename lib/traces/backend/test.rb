@@ -27,6 +27,10 @@ module Traces
 		private
 		
 		def trace(name, parent = nil, attributes: nil, &block)
+			unless name.is_a?(String)
+				raise ArgumentError, "Invalid name!"
+			end
+			
 			yield
 		end
 	end
