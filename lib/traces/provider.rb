@@ -33,7 +33,6 @@ module Traces
 	if Traces.const_defined?(:Backend)
 		def self.Provider(klass, &block)
 			klass.extend(Provider)
-			klass.prepend(Backend)
 			
 			provider = klass.traces_provider
 			provider.prepend(Backend)
