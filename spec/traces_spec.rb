@@ -24,6 +24,17 @@ require 'traces'
 
 class MyClass
 	def my_method(argument)
+		argument
+	end
+end
+
+class MySubClass < MyClass
+	def my_method(argument)
+		super * 2
+	end
+	
+	def my_other_method(argument)
+		argument
 	end
 end
 
@@ -33,16 +44,34 @@ Traces::Provider(MyClass) do
 	end
 end
 
+Traces::Provider(MySubClass) do
+	def my_other_method(argument)
+		trace('my_other_method', attributes: {argument: argument}) {super}
+	end
+end
+
 RSpec.describe Traces do
 	it "has a version number" do
 		expect(Traces::VERSION).not_to be nil
 	end
-
-	it "can invoke trace wrapper" do
-		instance = MyClass.new
+	
+	describe MyClass do
+		it "can invoke trace wrapper" do
+			expect(subject).to receive(:trace).and_call_original
+			
+			expect(subject.my_method(10)).to be == 10
+		end
+	end
+	
+	describe MySubClass do
+		it "can invoke trace wrapper" do
+			expect(subject).to receive(:trace).and_call_original
+			
+			expect(subject.my_method(10)).to be == 20
+		end
 		
-		expect(instance).to receive(:trace).and_call_original
-		
-		instance.my_method(10)
+		it "does not affect the base class" do
+			expect(MyClass.new).to_not respond_to(:my_other_method)
+		end
 	end
 end
