@@ -27,7 +27,7 @@ module Traces
 		def self.parse(parent, state = nil)
 			version, trace_id, parent_id, flags = parent.split('-')
 			
-			if version = '00'
+			if version == '00'
 				flags = Integer(trace_flags, 16)
 				
 				if state.is_a?(String)
