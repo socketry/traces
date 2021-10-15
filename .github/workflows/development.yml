@@ -21,20 +21,20 @@ jobs:
         
         experimental: [false]
         env:
-          - "TRACE_BACKEND=traces/backend/console"
+          - "TRACES_BACKEND=traces/backend/console"
         
         include:
           - os: ubuntu
             ruby: truffleruby
-            env: "TRACE_BACKEND=traces/backend/test"
+            env: "TRACES_BACKEND=traces/backend/test"
             experimental: true
           - os: ubuntu
             ruby: jruby
-            env: "TRACE_BACKEND=traces/backend/test"
+            env: "TRACES_BACKEND=traces/backend/test"
             experimental: true
           - os: ubuntu
             ruby: head
-            env: "TRACE_BACKEND=traces/backend/test"
+            env: "TRACES_BACKEND=traces/backend/test"
             experimental: true
     
     steps:
