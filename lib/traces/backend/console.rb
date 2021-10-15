@@ -27,9 +27,9 @@ module Traces
 		private
 		
 		def trace(name, parent = nil, attributes: nil, &block)
-			Console.logger.measure(self, name, **attributes) do
-				yield
-			end
+			Console.logger.info(self, name, attributes)
+			
+			yield
 		end
 	end
 end
