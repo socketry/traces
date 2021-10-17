@@ -20,57 +20,26 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require_relative '../context'
-require 'fiber'
-
-class Fiber
-	attr_accessor :traces_backend_context
+unless ENV['TRACES_BACKEND']
+	abort "No backend specified, tests will fail!"
 end
 
-module Traces
-	module Backend
-		class Span
-			def initialize(context)
-				@context = context
-			end
-			
-			attr :context
-			
-			def []= key, value
-				unless key.is_a?(String)
-					raise ArgumentError, "Invalid name!"
+require 'traces/provider'
+
+RSpec.describe Traces::Provider do
+	let(:klass) {Class.new}
+	
+	it "can yield span" do
+		Traces::Provider(klass) do
+			def span
+				trace('test.span') do |span|
+					return span
 				end
 			end
 		end
 		
-		private
+		span = klass.new.span
 		
-		def trace(name, parent = nil, attributes: nil, &block)
-			unless name.is_a?(String)
-				raise ArgumentError, "Invalid name!"
-			end
-			
-			context = Context.nested(Fiber.current.traces_backend_context)
-			Fiber.current.traces_backend_context = context
-			
-			if block.arity.zero?
-				yield
-			else
-				span = Span.new(context)
-				yield span
-			end
-		end
-		
-		def trace_context= context
-			Fiber.current.traces_backend_context = context
-		end
-		
-		def trace_context(span = nil)
-			if span
-				span.context
-			else
-				Fiber.current.traces_backend_context
-			end
-		end
+		expect(span).to respond_to(:[]=)
 	end
 end

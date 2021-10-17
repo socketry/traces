@@ -20,6 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+unless ENV['TRACES_BACKEND']
+	abort "No backend specified, tests will fail!"
+end
+
 require "bundler/setup"
 
 RSpec.configure do |config|

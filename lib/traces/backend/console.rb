@@ -20,16 +20,56 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+require_relative '../context'
+
 require 'console'
+require 'fiber'
+
+class Fiber
+	attr_accessor :traces_backend_context
+end
 
 module Traces
 	module Backend
+		class Span
+			def initialize(context, instance, name)
+				@context = context
+				@instance = instance
+				@name = name
+			end
+			
+			attr :context
+			
+			def []= key, value
+				Console.logger.info(@context, @name, "#{key} = #{value}")
+			end
+		end
+		
 		private
 		
-		def trace(name, parent = nil, attributes: nil, &block)
+		def trace(name, attributes: {}, &block)
+			context = Context.nested(Fiber.current.traces_backend_context)
+			Fiber.current.traces_backend_context = context
+			
 			Console.logger.info(self, name, attributes)
 			
-			yield
+			if block.arity.zero?
+				yield
+			else
+				yield Span.new(context, self, name)
+			end
+		end
+		
+		def trace_context= context
+			Fiber.current.traces_backend_context = context
+		end
+		
+		def trace_context(span = nil)
+			if span
+				span.context
+			else
+				Fiber.current.traces_backend_context
+			end
 		end
 	end
 end
