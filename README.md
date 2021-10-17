@@ -1,19 +1,17 @@
-# Trace
+# Traces
 
-As the author of many libraries which would benefit from tracing, there are few key priorities: (1) zero overhead if tracing is disabled, minimal overhead if enabled, and (2) a small and opinionated interface with standardised semantics. This gem provide such an interface.
-
-We implement a tracing interface which is largely consistent with the [W3C Trace Context Specification](https://github.com/w3c/trace-context).
+Capture nested traces during code execution in a vendor agnostic way. As the author of many libraries which would benefit from tracing, there are few key priorities: (1) zero overhead if tracing is disabled, minimal overhead if enabled, and (2) a small and opinionated interface with standardised semantics. This gem provide such an interface. We implement a tracing interface which is largely consistent with the [W3C Trace Context Specification](https://github.com/w3c/trace-context).
 
 [![Development Status](https://github.com/socketry/traces/workflows/Development/badge.svg)](https://github.com/socketry/traces/actions?workflow=Development)
 
 ## Installation
 
-    bundle add trace
+    bundle add traces
 
 ## Usage
 
 ``` ruby
-require 'trace'
+require 'traces'
 
 class MyClass
 	def my_method
@@ -22,7 +20,7 @@ class MyClass
 end
 
 # If tracing is disabled, this is a no-op.
-Trace::Provider(MyClass) do
+Traces::Provider(MyClass) do
 	def my_method
 		attributes = {
 			'foo' => 'bar'
@@ -48,6 +46,10 @@ We welcome contributions to this project.
 3.  Commit your changes (`git commit -am 'Add some feature'`)
 4.  Push to the branch (`git push origin my-new-feature`)
 5.  Create new Pull Request
+
+## See Also
+
+- [metrics](https://github.com/socketry/metrics) — A metrics interface which follows a similar pattern.
 
 ## License
 
