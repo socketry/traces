@@ -49,7 +49,7 @@ module Traces
 		# Create a local trace context which is likley to be globally unique.
 		# @parameter flags [Integer] Any trace context flags.
 		def self.local(flags = 0, **options)
-			self.new(SecureRandom.hex(16), SecureRandom.hex(8), flags, options)
+			self.new(SecureRandom.hex(16), SecureRandom.hex(8), flags, **options)
 		end
 		
 		# Nest a local trace context in an optional parent context.
