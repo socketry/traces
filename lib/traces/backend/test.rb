@@ -29,6 +29,7 @@ end
 
 module Traces
 	module Backend
+		# A backend which validates interface usage.
 		module Test
 			# A span which validates tag assignment.
 			class Span
@@ -52,43 +53,43 @@ module Traces
 				end
 			end
 			
-			private
-			
-			# Trace the given block of code and validate the interface usage.
-			# @parameter name [String] A useful name/annotation for the recorded span.
-			# @parameter attributes [Hash] Metadata for the recorded span.
-			def trace(name, attributes: nil, &block)
-				unless name.is_a?(String)
-					raise ArgumentError, "Invalid name!"
+			module Interface
+				# Trace the given block of code and validate the interface usage.
+				# @parameter name [String] A useful name/annotation for the recorded span.
+				# @parameter attributes [Hash] Metadata for the recorded span.
+				def trace(name, attributes: nil, &block)
+					unless name.is_a?(String)
+						raise ArgumentError, "Invalid name!"
+					end
+					
+					context = Context.nested(Fiber.current.traces_backend_context)
+					Fiber.current.traces_backend_context = context
+					
+					if block.arity.zero?
+						yield
+					else
+						span = Span.new(context)
+						yield span
+					end
 				end
 				
-				context = Context.nested(Fiber.current.traces_backend_context)
-				Fiber.current.traces_backend_context = context
-				
-				if block.arity.zero?
-					yield
-				else
-					span = Span.new(context)
-					yield span
+				# Assign a trace context to the current execution scope.
+				def trace_context= context
+					Fiber.current.traces_backend_context = context
 				end
-			end
-			
-			# Assign a trace context to the current execution scope.
-			def trace_context= context
-				Fiber.current.traces_backend_context = context
-			end
-			
-			# Get a trace context from the current execution scope.
-			# @parameter span [Span] An optional span from which to extract the context.
-			def trace_context(span = nil)
-				if span
-					span.context
-				else
-					Fiber.current.traces_backend_context
+				
+				# Get a trace context from the current execution scope.
+				# @parameter span [Span] An optional span from which to extract the context.
+				def trace_context(span = nil)
+					if span
+						span.context
+					else
+						Fiber.current.traces_backend_context
+					end
 				end
 			end
 		end
 		
-		self.include(Test)
+		Interface = Test::Interface
 	end
 end

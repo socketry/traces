@@ -37,7 +37,7 @@ module Traces
 			klass.extend(Provider)
 			
 			provider = klass.traces_provider
-			provider.prepend(Backend)
+			provider.prepend(Backend::Interface)
 			
 			klass.prepend(provider)
 			
