@@ -23,10 +23,6 @@
 module Traces
 	# Require a specific trace backend.
 	def self.require_backend(env = ENV)
-		if const_defined?(:Backend)
-			raise RuntimeError, "Backend already required!"
-		end
-		
 		if backend = env['TRACES_BACKEND']
 			require(backend)
 		end
