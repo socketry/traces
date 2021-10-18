@@ -16,6 +16,7 @@ $ bundle add traces
 
 - A {ruby Traces::Provider} which implements custom logic for wrapping existing code in traces.
 - A {ruby Traces::Context} which represents the current tracing environment which can include distributed tracing.
+- A {ruby Traces::Backend} which connects traces to a specific backend system for processing.
 
 ## Usage
 
@@ -53,7 +54,7 @@ end
 MyClass.new.my_method
 ~~~
 
-This code by itself will not create any traces. In order to execute it and output traces, you must set up a consumer.
+This code by itself will not create any traces. In order to execute it and output traces, you must set up a backend to consume them.
 
 ### Consuming Traces
 
