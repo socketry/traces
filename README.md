@@ -1,41 +1,17 @@
 # Traces
 
-Capture nested traces during code execution in a vendor agnostic way. As the author of many libraries which would benefit from tracing, there are few key priorities: (1) zero overhead if tracing is disabled, minimal overhead if enabled, and (2) a small and opinionated interface with standardised semantics. This gem provide such an interface. We implement a tracing interface which is largely consistent with the [W3C Trace Context Specification](https://github.com/w3c/trace-context).
+Capture nested traces during code execution in a vendor agnostic way.
 
 [![Development Status](https://github.com/socketry/traces/workflows/Development/badge.svg)](https://github.com/socketry/traces/actions?workflow=Development)
 
-## Installation
+## Features
 
-    bundle add traces
+  - Zero-overhead if tracing is disabled and minimal overhead if enabled.
+  - Small opinionated interface with standardised semantics, consistent with the [W3C Trace Context Specification](https://github.com/w3c/trace-context).
 
 ## Usage
 
-``` ruby
-require 'traces'
-
-class MyClass
-	def my_method
-		puts "Hello World"
-	end
-end
-
-# If tracing is disabled, this is a no-op.
-Traces::Provider(MyClass) do
-	def my_method
-		attributes = {
-			'foo' => 'bar'
-		}
-		
-		trace('my_method', attributes: attributes) do
-			super
-		end
-	end
-end
-
-MyClass.new.my_method
-```
-
-If tracing is disabled, there is no overhead.
+Please see the [project documentation](https://socketry.github.io/traces).
 
 ## Contributing
 

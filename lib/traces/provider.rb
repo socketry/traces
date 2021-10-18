@@ -23,6 +23,7 @@
 require_relative 'backend'
 
 module Traces
+	# A module which contains tracing specific wrappers.
 	module Provider
 		def traces_provider
 			@traces_provider ||= Module.new
@@ -30,7 +31,8 @@ module Traces
 	end
 	
 	# Bail out if there is no backend configured.
-	if Traces.const_defined?(:Backend)
+	if self.const_defined?(:Backend)
+		# Extend the specified class in order to emit traces.
 		def self.Provider(klass, &block)
 			klass.extend(Provider)
 			
