@@ -46,7 +46,7 @@ module Traces
 						raise ArgumentError, "Invalid name!"
 					end
 					
-					unless String(Value)
+					unless String(value)
 						raise ArgumentError, "Invalid value!"
 					end
 				end

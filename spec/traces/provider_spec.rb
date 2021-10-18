@@ -40,6 +40,6 @@ RSpec.describe Traces::Provider do
 		
 		span = klass.new.span
 		
-		expect(span).to respond_to(:[]=)
+		span["key"] = "value"
 	end
 end
