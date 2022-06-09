@@ -74,13 +74,8 @@ module Traces
 				end
 				
 				# Get a trace context from the current execution scope.
-				# @parameter span [Span] An optional span from which to extract the context.
-				def trace_context(span = nil)
-					if span
-						span.context
-					else
-						Fiber.current.traces_backend_context
-					end
+				def trace_context
+					Fiber.current.traces_backend_context
 				end
 			end
 		end

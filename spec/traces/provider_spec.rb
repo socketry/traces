@@ -31,15 +31,26 @@ RSpec.describe Traces::Provider do
 	
 	it "can yield span" do
 		Traces::Provider(klass) do
-			def span
+			def make_span
 				trace('test.span') do |span|
 					return span
 				end
 			end
 		end
 		
-		span = klass.new.span
-		
+		span = klass.new.make_span
 		span["key"] = "value"
+	end
+
+	it "can get current trace context" do
+		Traces::Provider(klass) do
+			def span
+				trace('test.span') do |span|
+					return trace_context
+				end
+			end
+		end
+		
+		trace_context = klass.new.span
 	end
 end
