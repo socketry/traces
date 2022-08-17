@@ -71,13 +71,19 @@ module Traces
 						resource = resource.to_s
 					end
 					
+					span = Span.new(context)
+					
+					# Ensure the attributes are valid and follow the requirements:
+					attributes.each do |key, value|
+						span[key] = value
+					end
+					
 					context = Context.nested(Fiber.current.traces_backend_context)
 					Fiber.current.traces_backend_context = context
 					
 					if block.arity.zero?
 						yield
 					else
-						span = Span.new(context)
 						yield span
 					end
 				end
