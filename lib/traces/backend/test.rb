@@ -58,6 +58,10 @@ module Traces
 				# @parameter name [String] A useful name/annotation for the recorded span.
 				# @parameter attributes [Hash] Metadata for the recorded span.
 				def trace(name, resource: self.class.name, attributes: nil, &block)
+					unless block_given?
+						raise ArgumentError, "No block given!"
+					end
+					
 					unless name.is_a?(String)
 						raise ArgumentError, "Invalid name (must be String): #{name.inspect}!"
 					end
