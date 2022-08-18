@@ -13,6 +13,8 @@ jobs:
   test:
     name: ${{matrix.ruby}} on ${{matrix.os}}
     runs-on: ${{matrix.os}}-latest
+    env:
+      TRACES_BACKEND: ${{matrix.backend}}
     
     strategy:
       matrix:
@@ -22,6 +24,10 @@ jobs:
         
         ruby:
           - "3.1"
+        
+        backend:
+          - 'traces/backend/test'
+          - 'traces/backend/console'
     
     steps:
     - uses: actions/checkout@v3

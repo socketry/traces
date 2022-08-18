@@ -44,11 +44,13 @@ module Traces
 				# @parameter value [Object] The metadata value. Should be coercable to a string.
 				def []= key, value
 					unless key.is_a?(String) || key.is_a?(Symbol)
-						raise ArgumentError, "Invalid name (must be String or Symbol): #{key.inspect}!"
+						raise ArgumentError, "Invalid attribute key (must be String or Symbol): #{key.inspect}!"
 					end
 					
-					unless String(value)
-						raise ArgumentError, "Invalid value (must be convertible to String): #{value.inspect}!"
+					begin
+						String(value)
+					rescue
+						raise ArgumentError, "Invalid attribute value (must be convertible to String): #{value.inspect}!"
 					end
 				end
 			end
@@ -71,14 +73,15 @@ module Traces
 						resource = resource.to_s
 					end
 					
+					context = Context.nested(Fiber.current.traces_backend_context)
+					
 					span = Span.new(context)
 					
 					# Ensure the attributes are valid and follow the requirements:
-					attributes.each do |key, value|
+					attributes&.each do |key, value|
 						span[key] = value
 					end
 					
-					context = Context.nested(Fiber.current.traces_backend_context)
 					Fiber.current.traces_backend_context = context
 					
 					if block.arity.zero?

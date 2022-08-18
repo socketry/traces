@@ -39,7 +39,7 @@ module Traces
 				end
 				
 				if state
-					state = state.map{|item| item.split('=')}
+					state = state.map{|item| item.split('=')}.to_h
 				end
 				
 				self.new(trace_id, parent_id, flags, state, **options)
@@ -91,7 +91,7 @@ module Traces
 		
 		# Denotes that the caller may have recorded trace data. When unset, the caller did not record trace data out-of-band.
 		def sampled?
-			@flags & SAMPLED
+			(@flags & SAMPLED) != 0
 		end
 		
 		# Whether this context was created from a distributed trace header.
