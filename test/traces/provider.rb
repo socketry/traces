@@ -20,58 +20,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-require 'traces'
-
-class MyClass
-	def my_method(argument)
-		argument
-	end
+unless ENV['TRACES_BACKEND']
+	abort "No backend specified, tests will fail!"
 end
 
-class MySubClass < MyClass
-	def my_method(argument)
-		super * 2
-	end
+require 'traces/provider'
+
+describe Traces::Provider do
+	let(:my_class) {Class.new}
 	
-	def my_other_method(argument)
-		argument
-	end
-end
-
-Traces::Provider(MyClass) do
-	def my_method(argument)
-		trace('my_method', attributes: {argument: argument}) {super}
-	end
-end
-
-Traces::Provider(MySubClass) do
-	def my_other_method(argument)
-		trace('my_other_method', attributes: {argument: argument}) {super}
-	end
-end
-
-RSpec.describe Traces do
-	it "has a version number" do
-		expect(Traces::VERSION).not_to be nil
-	end
-	
-	describe MyClass do
-		it "can invoke trace wrapper" do
-			expect(subject).to receive(:trace).and_call_original
-			
-			expect(subject.my_method(10)).to be == 10
-		end
-	end
-	
-	describe MySubClass do
-		it "can invoke trace wrapper" do
-			expect(subject).to receive(:trace).and_call_original
-			
-			expect(subject.my_method(10)).to be == 20
+	it "can yield span" do
+		Traces::Provider(my_class) do
+			def make_span
+				trace('test.span') do |span|
+					return span
+				end
+			end
 		end
 		
-		it "does not affect the base class" do
-			expect(MyClass.new).to_not respond_to(:my_other_method)
+		span = my_class.new.make_span
+		span["key"] = "value"
+	end
+
+	it "can get current trace context" do
+		Traces::Provider(my_class) do
+			def span
+				trace('test.span') do |span|
+					return trace_context
+				end
+			end
 		end
+		
+		trace_context = my_class.new.span
 	end
 end
