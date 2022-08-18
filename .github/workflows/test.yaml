@@ -1,6 +1,12 @@
-name: Development
+name: Test
 
 on: [push, pull_request]
+
+permissions:
+  contents: read
+
+env:
+  CONSOLE_OUTPUT: XTerm
 
 jobs:
   test:
@@ -15,35 +21,34 @@ jobs:
           - macos
         
         ruby:
-          - "2.6"
           - "2.7"
           - "3.0"
+          - "3.1"
         
         experimental: [false]
-        env:
-          - "TRACES_BACKEND=traces/backend/console"
         
         include:
           - os: ubuntu
             ruby: truffleruby
-            env: "TRACES_BACKEND=traces/backend/test"
             experimental: true
           - os: ubuntu
             ruby: jruby
-            env: "TRACES_BACKEND=traces/backend/test"
             experimental: true
           - os: ubuntu
             ruby: head
-            env: "TRACES_BACKEND=traces/backend/test"
             experimental: true
+          - os: ubuntu
+            ruby: 3.1
+            env:
+              TRACES_BACKEND: "traces/backend/test"
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{matrix.ruby}}
         bundler-cache: true
     
     - name: Run tests
-      timeout-minutes: 5
-      run: ${{matrix.env}} bundle exec rspec
+      timeout-minutes: 10
+      run: bundle exec bake test
