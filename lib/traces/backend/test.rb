@@ -43,12 +43,12 @@ module Traces
 				# @parameter key [String] The metadata key.
 				# @parameter value [Object] The metadata value. Should be coercable to a string.
 				def []= key, value
-					unless key.is_a?(String)
-						raise ArgumentError, "Invalid name (must be String): #{key.inspect}!"
+					unless key.is_a?(String) || key.is_a?(Symbol)
+						raise ArgumentError, "Invalid name (must be String or Symbol): #{key.inspect}!"
 					end
 					
 					unless String(value)
-						raise ArgumentError, "Invalid value (must be String): #{value.inspect}!"
+						raise ArgumentError, "Invalid value (must be convertible to String): #{value.inspect}!"
 					end
 				end
 			end
