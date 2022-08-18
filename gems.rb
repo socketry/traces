@@ -19,5 +19,6 @@ group :test do
 	gem "console"
 	gem "ddtrace"
 	
-	gem "sus"	
+	gem "sus"
+	gem "covered"
 end
