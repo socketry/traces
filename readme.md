@@ -2,7 +2,7 @@
 
 Capture nested traces during code execution in a vendor agnostic way.
 
-[![Development Status](https://github.com/socketry/traces/workflows/Development/badge.svg)](https://github.com/socketry/traces/actions?workflow=Development)
+[![Development Status](https://github.com/socketry/traces/workflows/Test/badge.svg)](https://github.com/socketry/traces/actions?workflow=Test)
 
 ## Features
 

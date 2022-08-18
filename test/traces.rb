@@ -26,6 +26,14 @@ class MyClass
 	def my_method(argument)
 		argument
 	end
+	
+	def my_method_with_result(result)
+		result
+	end
+	
+	def my_method_with_attributes(attributes)
+		attributes
+	end
 end
 
 class MySubClass < MyClass
@@ -41,6 +49,18 @@ end
 Traces::Provider(MyClass) do
 	def my_method(argument)
 		trace('my_method', attributes: {argument: argument}) {super}
+	end
+	
+	def my_method_with_result(result)
+		trace('my_method_with_result') do |span|
+			super.tap do |result|
+				span["result"] = result
+			end
+		end
+	end
+	
+	def my_method_with_attributes(attributes)
+		trace('my_method_with_attributes', attributes: attributes) {super}
 	end
 end
 
@@ -63,6 +83,35 @@ describe Traces do
 			
 			expect(instance.my_method(10)).to be == 10
 		end
+		
+		with 'result' do
+			let(:result) {"result"}
+			
+			it "can invoke trace wrapper" do
+				expect(instance).to receive(:trace)
+				
+				expect(instance.my_method_with_result(result)).to be == result
+			end
+		end
+		
+		with 'attributes' do
+			let(:attributes) {{"name" => "value"}}
+			
+			it "can invoke trace wrapper" do
+				expect(instance).to receive(:trace)
+				
+				expect(instance.my_method_with_attributes(attributes)).to be == attributes
+			end
+		end
+		
+		with 'parent trace context' do
+			let(:context) {Traces::Context.local}
+			
+			it "can create child trace context" do
+				instance.trace_context = context
+				expect(instance.trace_context).to be == context
+			end
+		end
 	end
 	
 	describe MySubClass do
@@ -78,4 +127,56 @@ describe Traces do
 			expect(MyClass.new).not.to respond_to(:my_other_method)
 		end
 	end
+end
+
+if defined?(Traces::Backend::Test)
+	describe Traces do
+		let(:instance) {MyClass.new}
+		
+		with 'invalid attribute key' do
+			let(:attributes) {{Object.new => "value"}}
+			
+			it "fails with exception" do
+				expect(instance).to receive(:trace)
+				
+				expect do
+					instance.my_method_with_attributes(attributes)
+				end.to raise_exception(ArgumentError)
+			end
+		end
+		
+		with 'invalid attribute value' do
+			let(:value) do
+				Object.new.tap do |object|
+					object.singleton_class.undef_method :to_s
+				end
+			end
+			
+			let(:attributes) {{"key" => value}}
+			
+			it "fails with exception" do
+				expect(instance).to receive(:trace)
+				
+				expect do
+					instance.my_method_with_attributes(attributes)
+				end.to raise_exception(ArgumentError)
+			end
+		end
+		
+		with 'missing block' do
+			it "fails with exception" do
+				expect do
+					instance.trace('foo')
+				end.to raise_exception(ArgumentError)
+			end		
+		end
+		
+		with 'invalid name' do
+			it "fails with exception" do
+				expect do
+					instance.trace(Object.new) {}
+				end.to raise_exception(ArgumentError)
+			end		
+		end
+	end 
 end
