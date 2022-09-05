@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
 	
 	spec.homepage = "https://github.com/socketry/traces"
 	
-	spec.files = Dir.glob('{lib}/**/*', File::FNM_DOTMATCH, base: __dir__)
+	spec.files = Dir.glob(['{lib}/**/*', '*.md'], File::FNM_DOTMATCH, base: __dir__)
 	
 	spec.add_development_dependency "bake-test", "~> 0.2"
 	spec.add_development_dependency "bake-test-external", "~> 0.2"
