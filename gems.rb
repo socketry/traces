@@ -13,12 +13,6 @@ group :maintenance, optional: true do
 end
 
 group :test do
-	gem "bake-test"
-	gem "bake-test-external"
-
 	gem "console"
 	gem "ddtrace"
-	
-	gem "sus"
-	gem "covered"
 end
