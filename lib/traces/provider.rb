@@ -28,18 +28,23 @@ module Traces
 		self.const_defined?(:Backend)
 	end
 	
-	# A module which contains tracing specific wrappers.
 	module Provider
+	end
+	
+	module Singleton
+		# A module which contains tracing specific wrappers.
 		def traces_provider
 			@traces_provider ||= Module.new
 		end
 	end
 	
+	private_constant :Singleton
+	
 	# Bail out if there is no backend configured.
 	if self.enabled?
 		# Extend the specified class in order to emit traces.
 		def self.Provider(klass, &block)
-			klass.extend(Provider)
+			klass.extend(Singleton)
 			
 			provider = klass.traces_provider
 			provider.prepend(Backend::Interface)
