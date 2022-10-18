@@ -17,5 +17,4 @@ end
 
 group :test do
 	gem "console"
-	gem "ddtrace"
 end
