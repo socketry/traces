@@ -34,7 +34,9 @@ module Traces
 			
 			klass.prepend(provider)
 			
-			provider.module_exec(&block)
+			provider.module_exec(&block) if block_given?
+			
+			return provider
 		end
 	else
 		def self.Provider(klass, &block)

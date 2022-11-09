@@ -24,7 +24,12 @@ describe Traces::Provider do
 		span = my_class.new.make_span
 		span["key"] = "value"
 	end
-
+	
+	it "works without a block" do
+		provider = Traces::Provider(my_class)
+		expect(provider).to be_equal(my_class.traces_provider)
+	end
+	
 	it "can get current trace context" do
 		Traces::Provider(my_class) do
 			def span
