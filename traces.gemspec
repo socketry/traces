@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
 	spec.version = Traces::VERSION
 	
 	spec.summary = "Application instrumentation and tracing."
-	spec.authors = ["Samuel Williams"]
+	spec.authors = ["Samuel Williams", "Felix Yan"]
 	spec.license = "MIT"
 	
 	spec.cert_chain  = ['release.cert']

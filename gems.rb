@@ -2,6 +2,7 @@
 
 # Released under the MIT License.
 # Copyright, 2021-2022, by Samuel Williams.
+# Copyright, 2022, by Felix Yan.
 
 source 'https://rubygems.org'
 
