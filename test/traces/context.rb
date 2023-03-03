@@ -58,6 +58,20 @@ describe Traces::Context do
 		end
 	end
 	
+	with '#to_json' do
+		it 'can be converted to JSON' do
+			context = Traces::Context.new(trace_id, parent_id, 0)
+			
+			text = context.to_json
+			
+			expect(JSON.parse(text)).to have_keys(
+				'trace_id' => be == trace_id,
+				'parent_id' => be == parent_id,
+				'flags' => be == 0,
+			)
+		end
+	end
+	
 	with '.parse' do
 		let(:trace_state) {nil}
 		let(:context) {Traces::Context.parse(trace_parent, trace_state)}
@@ -67,6 +81,7 @@ describe Traces::Context do
 			expect(context.parent_id).to be == parent_id
 			expect(context.flags).to be == flags
 			expect(context.sampled?).to be == false
+			expect(context).not.to be(:remote?)
 		end
 		
 		with 'trace state', trace_state: 'foo=bar' do

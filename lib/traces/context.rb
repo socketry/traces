@@ -86,5 +86,19 @@ module Traces
 		def to_s
 			"00-#{@trace_id}-#{@parent_id}-#{@flags.to_s(16)}"
 		end
+		
+		def as_json
+			{
+				trace_id: @trace_id,
+				parent_id: @parent_id,
+				flags: @flags,
+				state: @state,
+				remote: @remote
+			}
+		end
+		
+		def to_json(...)
+			as_json.to_json(...)
+		end
 	end
 end
