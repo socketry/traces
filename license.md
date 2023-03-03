@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright, 2021-2022, by Samuel Williams.  
+Copyright, 2021-2023, by Samuel Williams.  
 Copyright, 2022, by Felix Yan.  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
