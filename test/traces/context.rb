@@ -4,6 +4,7 @@
 # Copyright, 2022-2023, by Samuel Williams.
 
 require 'traces/context'
+require 'json'
 
 describe Traces::Context do
 	let(:trace_id) {"496e95c5964f7cb924fc820a469a9f74"}

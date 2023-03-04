@@ -4,6 +4,7 @@
 # Copyright, 2023, by Samuel Williams.
 
 require 'traces/provider'
+require 'json'
 
 describe Traces::Provider do
 	let(:document_root) {File.expand_path(".capture", __dir__)}
