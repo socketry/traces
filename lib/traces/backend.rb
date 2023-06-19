@@ -8,6 +8,8 @@ module Traces
 	def self.require_backend(env = ENV)
 		if backend = env['TRACES_BACKEND']
 			require(backend)
+			
+			Traces.extend(Backend::Interface)
 		end
 	end
 end

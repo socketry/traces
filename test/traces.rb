@@ -31,11 +31,11 @@ end
 
 Traces::Provider(MyClass) do
 	def my_method(argument)
-		trace('my_method', attributes: {argument: argument}) {super}
+		Traces.trace('my_method', attributes: {argument: argument}) {super}
 	end
 	
 	def my_method_with_result(result)
-		trace('my_method_with_result') do |span|
+		Traces.trace('my_method_with_result') do |span|
 			super.tap do |result|
 				span["result"] = result
 			end
@@ -43,13 +43,13 @@ Traces::Provider(MyClass) do
 	end
 	
 	def my_method_with_attributes(attributes)
-		trace('my_method_with_attributes', attributes: attributes) {super}
+		Traces.trace('my_method_with_attributes', attributes: attributes) {super}
 	end
 end
 
 Traces::Provider(MySubClass) do
 	def my_other_method(argument)
-		trace('my_other_method', attributes: {argument: argument}) {super}
+		Traces.trace('my_other_method', attributes: {argument: argument}) {super}
 	end
 end
 
@@ -62,7 +62,7 @@ describe Traces do
 		let(:instance) {MyClass.new}
 		
 		it "can invoke trace wrapper" do
-			expect(instance).to receive(:trace)
+			expect(Traces).to receive(:trace)
 			
 			expect(instance.my_method(10)).to be == 10
 		end
@@ -71,7 +71,7 @@ describe Traces do
 			let(:result) {"result"}
 			
 			it "can invoke trace wrapper" do
-				expect(instance).to receive(:trace)
+				expect(Traces).to receive(:trace)
 				
 				expect(instance.my_method_with_result(result)).to be == result
 			end
@@ -81,7 +81,7 @@ describe Traces do
 			let(:attributes) {{"name" => "value"}}
 			
 			it "can invoke trace wrapper" do
-				expect(instance).to receive(:trace)
+				expect(Traces).to receive(:trace)
 				
 				expect(instance.my_method_with_attributes(attributes)).to be == attributes
 			end
@@ -91,8 +91,8 @@ describe Traces do
 			let(:context) {Traces::Context.local}
 			
 			it "can create child trace context" do
-				instance.trace_context = context
-				expect(instance.trace_context).to be == context
+				Traces.trace_context = context
+				expect(Traces.trace_context).to be == context
 			end
 		end
 	end
@@ -101,7 +101,7 @@ describe Traces do
 		let(:instance) {MySubClass.new}
 		
 		it "can invoke trace wrapper" do
-			expect(instance).to receive(:trace)
+			expect(Traces).to receive(:trace)
 			
 			expect(instance.my_method(10)).to be == 20
 		end
@@ -120,7 +120,7 @@ if defined?(Traces::Backend::Test)
 			let(:attributes) {{Object.new => "value"}}
 			
 			it "fails with exception" do
-				expect(instance).to receive(:trace)
+				expect(Traces).to receive(:trace)
 				
 				expect do
 					instance.my_method_with_attributes(attributes)
@@ -138,7 +138,7 @@ if defined?(Traces::Backend::Test)
 			let(:attributes) {{"key" => value}}
 			
 			it "fails with exception" do
-				expect(instance).to receive(:trace)
+				expect(Traces).to receive(:trace)
 				
 				expect do
 					instance.my_method_with_attributes(attributes)
@@ -149,7 +149,7 @@ if defined?(Traces::Backend::Test)
 		with 'missing block' do
 			it "fails with exception" do
 				expect do
-					instance.trace('foo')
+					Traces.trace('foo')
 				end.to raise_exception(ArgumentError)
 			end		
 		end
@@ -157,7 +157,7 @@ if defined?(Traces::Backend::Test)
 		with 'invalid name' do
 			it "fails with exception" do
 				expect do
-					instance.trace(Object.new) {}
+					Traces.trace(Object.new) {}
 				end.to raise_exception(ArgumentError)
 			end		
 		end

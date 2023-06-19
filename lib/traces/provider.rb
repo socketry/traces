@@ -21,6 +21,23 @@ module Traces
 		end
 	end
 	
+	module Deprecated
+		def trace(...)
+			warn "Traces::Provider.trace is deprecated. Please use Traces.trace instead."
+			Traces.trace(...)
+		end
+		
+		def trace_context
+			warn "Traces::Provider.trace_context is deprecated. Please use Traces.trace_context instead."
+			Traces.trace_context
+		end
+		
+		def trace_context=(value)
+			warn "Traces::Provider.trace_context= is deprecated. Please use Traces.trace_context= instead."
+			Traces.trace_context = value
+		end
+	end
+	
 	private_constant :Singleton
 	
 	# Bail out if there is no backend configured.
@@ -30,7 +47,7 @@ module Traces
 			klass.extend(Singleton)
 			
 			provider = klass.traces_provider
-			provider.prepend(Backend::Interface)
+			provider.prepend(Deprecated)
 			
 			klass.prepend(provider)
 			
