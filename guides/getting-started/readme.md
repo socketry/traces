@@ -45,7 +45,7 @@ Traces::Provider(MyClass) do
 			'foo' => 'bar'
 		}
 		
-		trace('my_method', attributes: attributes) do
+		Traces.trace('my_method', attributes: attributes) do
 			super
 		end
 	end

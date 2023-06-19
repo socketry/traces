@@ -15,7 +15,7 @@ describe Traces::Provider do
 	it "can yield span" do
 		Traces::Provider(my_class) do
 			def make_span
-				trace('test.span') do |span|
+				Traces.trace('test.span') do |span|
 					return span
 				end
 			end
@@ -33,8 +33,8 @@ describe Traces::Provider do
 	it "can get current trace context" do
 		Traces::Provider(my_class) do
 			def span
-				trace('test.span') do |span|
-					return trace_context
+				Traces.trace('test.span') do |span|
+					return Traces.trace_context
 				end
 			end
 		end

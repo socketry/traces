@@ -16,18 +16,18 @@ end
 
 Traces::Provider(App) do
 	def call
-		trace("my_trace", resource: "my_resource", attributes: {foo: "bar"}) do |span|
+		Traces.trace("my_trace", resource: "my_resource", attributes: {foo: "bar"}) do |span|
 			span[:foo] = "baz"
 			super
 		end
 	end
 	
 	def nested
-		trace("nested") do
-			context = self.trace_context
+		Traces.trace("nested") do
+			context = Traces.trace_context
 			
 			super do
-				self.trace_context = context
+				Traces.trace_context = context
 				
 				yield
 			end
