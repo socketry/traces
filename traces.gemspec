@@ -5,6 +5,7 @@ require_relative "lib/traces/version"
 Gem::Specification.new do |spec|
 	spec.name = "traces"
 	spec.version = Traces::VERSION
+	spec.required_ruby_version = ">= 3.0.0"
 	
 	spec.summary = "Application instrumentation and tracing."
 	spec.authors = ["Samuel Williams", "Felix Yan"]
