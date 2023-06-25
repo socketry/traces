@@ -52,10 +52,8 @@ module Traces
 						raise ArgumentError, "Invalid name (must be String): #{name.inspect}!"
 					end
 					
-					if resource
-						# It should be convertable:
-						resource = resource.to_s
-					end
+					# It should be convertable:
+					resource &&= resource.to_s
 					
 					context = Context.nested(Fiber.current.traces_backend_context)
 					
