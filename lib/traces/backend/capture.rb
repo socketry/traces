@@ -17,16 +17,14 @@ module Traces
 		module Capture
 			# A span which validates tag assignment.
 			class Span
-				def initialize(context, instance, name, resource, attributes)
+				def initialize(context, name, resource, attributes)
 					@context = context
-					@instance = instance
 					@name = name
 					@resource = resource
 					@attributes = attributes
 				end
 				
 				attr :context
-				attr :instance
 				attr :name
 				attr :resource
 				attr :attributes
@@ -60,11 +58,11 @@ module Traces
 				# Trace the given block of code and log the execution.
 				# @parameter name [String] A useful name/annotation for the recorded span.
 				# @parameter attributes [Hash] Metadata for the recorded span.
-				def trace(name, resource: self, attributes: {}, &block)
+				def trace(name, resource: nil, attributes: {}, &block)
 					context = Context.nested(Fiber.current.traces_backend_context)
 					Fiber.current.traces_backend_context = context
 					
-					span = Span.new(context, self, name, resource, attributes)
+					span = Span.new(context, name, resource, attributes)
 					Capture.spans << span
 					
 					yield span

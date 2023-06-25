@@ -41,8 +41,9 @@ module Traces
 			module Interface
 				# Trace the given block of code and validate the interface usage.
 				# @parameter name [String] A useful name/annotation for the recorded span.
+				# @parameter resource [String] The context in which the trace operation is occuring.
 				# @parameter attributes [Hash] Metadata for the recorded span.
-				def trace(name, resource: self.class.name, attributes: nil, &block)
+				def trace(name, resource: nil, attributes: nil, &block)
 					unless block_given?
 						raise ArgumentError, "No block given!"
 					end
@@ -51,10 +52,8 @@ module Traces
 						raise ArgumentError, "Invalid name (must be String): #{name.inspect}!"
 					end
 					
-					if resource
-						# It should be convertable:
-						resource = resource.to_s
-					end
+					# It should be convertable:
+					resource &&= resource.to_s
 					
 					context = Context.nested(Fiber.current.traces_backend_context)
 					
