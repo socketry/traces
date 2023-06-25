@@ -18,9 +18,8 @@ module Traces
 		module Console
 			# A span which validates tag assignment.
 			class Span
-				def initialize(context, instance, name)
+				def initialize(context, name)
 					@context = context
-					@instance = instance
 					@name = name
 				end
 				
@@ -38,16 +37,16 @@ module Traces
 				# Trace the given block of code and log the execution.
 				# @parameter name [String] A useful name/annotation for the recorded span.
 				# @parameter attributes [Hash] Metadata for the recorded span.
-				def trace(name, resource: self, attributes: {}, &block)
+				def trace(name, resource: nil, attributes: {}, &block)
 					context = Context.nested(Fiber.current.traces_backend_context)
 					Fiber.current.traces_backend_context = context
 					
-					::Console.logger.info(resource, name, attributes)
+					::Console.logger.info(resource || self, name, attributes)
 					
 					if block.arity.zero?
 						yield
 					else
-						yield Span.new(context, self, name)
+						yield Span.new(context, name)
 					end
 				end
 				
