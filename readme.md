@@ -27,4 +27,5 @@ We welcome contributions to this project.
 
   - [traces-backend-open\_telemetry](https://github.com/socketry/traces-backend-open_telemetry) — A backend for submitting traces to [OpenTelemetry](https://github.com/open-telemetry/opentelemetry-ruby), including [ScoutAPM](https://github.com/scoutapp/scout_apm_ruby).
   - [traces-backend-datadog](https://github.com/socketry/traces-backend-datadog) — A backend for submitting traces to [Datadog](https://github.com/DataDog/dd-trace-rb).
+  - [traces-backend-newrelic](https://github.com/newrelic/traces-backend-newrelic) - A backend for submitting traces to [New Relic](https://github.com/newrelic/newrelic-ruby-agent).
   - [metrics](https://github.com/socketry/metrics) — A metrics interface which follows a similar pattern.
