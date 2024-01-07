@@ -73,3 +73,4 @@ Separate implementations are provided for specific APMs:
 
 - [OpenTelemetry](https://github.com/socketry/traces-backend-open_telemetry)
 - [Datadog](https://github.com/socketry/traces-backend-datadog)
+- [New Relic](https://github.com/newrelic/traces-backend-newrelic)
