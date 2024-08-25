@@ -14,9 +14,13 @@ module Traces
 					require(backend)
 				rescue LoadError => error
 					::Console::Event::Failure.for(error).emit(self, "Unable to load traces backend!", backend: backend, severity: :warn)
+					
+					return false
 				end
 				
 				Traces.extend(Backend::Interface)
+				
+				return true
 			end
 		end
 	end
