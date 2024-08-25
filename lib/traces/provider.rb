@@ -8,7 +8,7 @@ require_relative 'backend'
 module Traces
 	# @returns [Boolean] Whether there is an active backend.
 	def self.enabled?
-		self.const_defined?(:Backend)
+		Backend.const_defined?(:Interface)
 	end
 	
 	module Provider

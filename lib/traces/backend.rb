@@ -6,18 +6,20 @@
 require 'console/event/failure'
 
 module Traces
-	# Require a specific trace backend.
-	def self.require_backend(env = ENV)
-		if backend = env['TRACES_BACKEND']
-			begin
-				require(backend)
-			rescue LoadError => error
-				::Console::Event::Failure.for(error).emit(self, "Unable to load traces backend!", backend: backend, severity: :warn)
+	module Backend
+		# Require a specific trace backend.
+		def self.require_backend(env = ENV)
+			if backend = env['TRACES_BACKEND']
+				begin
+					require(backend)
+				rescue LoadError => error
+					::Console::Event::Failure.for(error).emit(self, "Unable to load traces backend!", backend: backend, severity: :warn)
+				end
+				
+				Traces.extend(Backend::Interface)
 			end
-			
-			Traces.extend(Backend::Interface)
 		end
 	end
 end
 
-Traces.require_backend
+Traces::Backend.require_backend
