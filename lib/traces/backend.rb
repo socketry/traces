@@ -3,11 +3,17 @@
 # Released under the MIT License.
 # Copyright, 2021-2023, by Samuel Williams.
 
+require 'console/event/failure'
+
 module Traces
 	# Require a specific trace backend.
 	def self.require_backend(env = ENV)
 		if backend = env['TRACES_BACKEND']
-			require(backend)
+			begin
+				require(backend)
+			rescue LoadError => error
+				::Console::Event::Failure.for(error).emit(self, "Unable to load traces backend!", backend: backend, severity: :warn)
+			end
 			
 			Traces.extend(Backend::Interface)
 		end
