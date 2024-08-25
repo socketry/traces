@@ -17,5 +17,13 @@ group :maintenance, optional: true do
 end
 
 group :test do
-	gem "console"
+	gem "sus"
+	gem "covered"
+	gem "decode"
+	gem "rubocop"
+	
+	gem "sus-fixtures-console"
+	
+	gem "bake-test"
+	gem "bake-test-external"
 end
