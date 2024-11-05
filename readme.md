@@ -11,7 +11,17 @@ Capture nested traces during code execution in a vendor agnostic way.
 
 ## Usage
 
-Please see the [project documentation](https://socketry.github.io/traces).
+Please see the [project documentation](https://socketry.github.io/traces/) for more details.
+
+  - [Getting Started](https://socketry.github.io/traces/guides/getting-started/index) - This guide explains how to use `traces` for tracing code execution.
+
+  - [Testing](https://socketry.github.io/traces/guides/testing/index) - This guide explains how to test traces in your code.
+
+  - [Capture](https://socketry.github.io/traces/guides/capture/index) - This guide explains how to use `traces` for exporting traces from your application. This can be used to document all possible traces.
+
+## Releases
+
+Please see the [project releases](https://socketry.github.io/traces/releases/index) for all releases.
 
 ## Contributing
 
