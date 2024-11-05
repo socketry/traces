@@ -3,7 +3,7 @@
 # Released under the MIT License.
 # Copyright, 2022-2023, by Samuel Williams.
 
-require "traces/backend"
+require "traces/config"
 require "json"
 
 require "sus/fixtures/console"
