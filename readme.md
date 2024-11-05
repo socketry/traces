@@ -25,7 +25,7 @@ Please see the [project releases](https://socketry.github.io/traces/releases/ind
 
 ### v0.14.0
 
-  - [Introduce `Traces::Config` to control tracing behavior](https://socketry.github.io/traces/releases/index#introduce-traces::config-to-control-tracing-behavior)
+  - [Introduce `Traces::Config` to Expose `prepare` Hook](https://socketry.github.io/traces/releases/index#introduce-traces::config-to-expose-prepare-hook)
 
 ## Contributing
 
