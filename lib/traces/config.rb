@@ -43,7 +43,7 @@ module Traces
 						return true
 					end
 				rescue LoadError => error
-					::Console::Event::Failure.for(error).emit(self, "Unable to load traces backend!", backend: backend, severity: :warn)
+					warn "Unable to load traces backend: #{backend.inspect}!"
 				end
 			end
 			
