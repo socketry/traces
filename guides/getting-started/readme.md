@@ -56,6 +56,33 @@ MyClass.new.my_method
 
 This code by itself will not create any traces. In order to execute it and output traces, you must set up a backend to consume them.
 
+In addition, to trace class methods:
+
+~~~ ruby
+require 'traces'
+
+class MyClass
+	def self.my_method
+		puts "Hello World"
+	end
+end
+
+# If tracing is disabled, this is a no-op.
+Traces::Provider(MyClass.singleton_class) do
+	def my_method
+		attributes = {
+			'foo' => 'bar'
+		}
+		
+		Traces.trace('my_method', attributes: attributes) do
+			super
+		end
+	end
+end
+
+MyClass.my_method
+~~~
+
 ### Consuming Traces
 
 Consuming traces means proving a backend implementation which can emit those traces to some log or service. There are several options, but two backends are included by default:
