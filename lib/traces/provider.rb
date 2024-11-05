@@ -11,6 +11,7 @@ module Traces
 		Backend.const_defined?(:Interface)
 	end
 	
+	# @namespace
 	module Provider
 	end
 	

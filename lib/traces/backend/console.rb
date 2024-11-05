@@ -8,9 +8,7 @@ require_relative '../context'
 require 'console'
 require 'fiber'
 
-class Fiber
-	attr_accessor :traces_backend_context
-end
+Fiber.attr_accessor :traces_backend_context
 
 module Traces
 	module Backend
@@ -18,11 +16,15 @@ module Traces
 		module Console
 			# A span which validates tag assignment.
 			class Span
+				# Initialize a new span.
+				# @parameter context [Context] The context in which the span is recorded.
+				# @parameter name [String] A useful name/annotation for the recorded span.
 				def initialize(context, name)
 					@context = context
 					@name = name
 				end
 				
+				# @attribute [Context] The context in which the span is recorded.
 				attr :context
 				
 				# Assign some metadata to the span.
@@ -33,6 +35,7 @@ module Traces
 				end
 			end
 			
+			# The console backend interface.
 			module Interface
 				# Trace the given block of code and log the execution.
 				# @parameter name [String] A useful name/annotation for the recorded span.

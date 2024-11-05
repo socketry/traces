@@ -4,9 +4,13 @@
 # Copyright, 2024, by Samuel Williams.
 
 module Traces
+	# Represents a configuration for the traces library.
 	class Config
 		DEFAULT_PATH = ENV.fetch("TRACES_CONFIG_DEFAULT_PATH", "config/traces.rb")
 		
+		# Load the configuration from the given path.
+		# @parameter path [String] The path to the configuration file.
+		# @returns [Config] The loaded configuration.
 		def self.load(path)
 			config = self.new
 			
@@ -17,6 +21,8 @@ module Traces
 			return config
 		end
 		
+		# Load the default configuration.
+		# @returns [Config] The default configuration.
 		def self.default
 			@default ||= self.load(DEFAULT_PATH)
 		end
@@ -25,7 +31,7 @@ module Traces
 		def prepare
 		end
 		
-		# Require a specific trace backend.
+		# Require a specific traces backend implementation.
 		def require_backend(env = ENV)
 			if backend = env['TRACES_BACKEND']
 				begin

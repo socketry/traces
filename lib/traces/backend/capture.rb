@@ -7,9 +7,7 @@ require_relative '../context'
 
 require 'fiber'
 
-class Fiber
-	attr_accessor :traces_backend_context
-end
+Fiber.attr_accessor :traces_backend_context
 
 module Traces
 	module Backend
@@ -17,6 +15,11 @@ module Traces
 		module Capture
 			# A span which validates tag assignment.
 			class Span
+				# Initialize a new span.
+				# @parameter context [Context] The context in which the span is recorded.
+				# @parameter name [String] A useful name/annotation for the recorded span.
+				# @parameter resource [String] The "resource" that the span is associated with.
+				# @parameter attributes [Hash] Metadata for the recorded span.
 				def initialize(context, name, resource, attributes)
 					@context = context
 					@name = name
@@ -36,6 +39,7 @@ module Traces
 					@attributes[key] = value
 				end
 				
+				# Convert the span to a JSON representation.
 				def as_json
 					{
 						name: @name,
@@ -45,15 +49,18 @@ module Traces
 					}
 				end
 				
+				# Convert the span to a JSON string.
 				def to_json(...)
 					as_json.to_json(...)
 				end
 			end
 			
+			# All captured spans.
 			def self.spans
 				@spans ||= []
 			end
 			
+			# The capture backend interface.
 			module Interface
 				# Trace the given block of code and log the execution.
 				# @parameter name [String] A useful name/annotation for the recorded span.

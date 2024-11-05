@@ -5,3 +5,7 @@
 
 require_relative 'traces/version'
 require_relative 'traces/provider'
+
+# @namespace
+module Traces
+end
