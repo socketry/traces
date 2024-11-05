@@ -38,8 +38,6 @@ module Traces
 					if require(backend)
 						Traces.extend(Backend::Interface)
 						
-						self.prepare
-						
 						return true
 					end
 				rescue LoadError => error

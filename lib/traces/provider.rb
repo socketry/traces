@@ -36,6 +36,8 @@ module Traces
 			
 			return provider
 		end
+		
+		Config::DEFAULT.prepare
 	else
 		def self.Provider(klass, &block)
 			# Tracing disabled.
