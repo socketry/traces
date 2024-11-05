@@ -6,6 +6,7 @@
 require_relative 'config'
 
 module Traces
+	# The backend implementation is responsible for recording and reporting traces.
 	module Backend
 	end
 	

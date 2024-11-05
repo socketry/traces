@@ -47,6 +47,12 @@ module Traces
 		
 		SAMPLED = 0x01
 		
+		# Initialize the trace context.
+		# @parameter trace_id [String] The ID of the whole trace forest.
+		# @parameter parent_id [String] The ID of this operation as known by the caller (sometimes referred to as the span ID).
+		# @parameter flags [Integer] An 8-bit field that controls tracing flags such as sampling, trace level, etc.
+		# @parameter state [Hash] Additional vendor-specific trace identification information.
+		# @parameter remote [Boolean] Whether this context was created from a distributed trace header.
 		def initialize(trace_id, parent_id, flags, state = nil, remote: false)
 			@trace_id = trace_id
 			@parent_id = parent_id
@@ -63,13 +69,13 @@ module Traces
 		# The ID of the whole trace forest and is used to uniquely identify a distributed trace through a system. It is represented as a 16-byte array, for example, 4bf92f3577b34da6a3ce929d0e0e4736. All bytes as zero (00000000000000000000000000000000) is considered an invalid value.
 		attr :trace_id
 		
-		# The ID of this request as known by the caller (in some tracing systems, this is known as the span-id, where a span is the execution of a client request). It is represented as an 8-byte array, for example, 00f067aa0ba902b7. All bytes as zero (0000000000000000) is considered an invalid value.
+		# The ID of this operation as known by the caller (in some tracing systems, this is known as the span-id, where a span is the execution of a client operation). It is represented as an 8-byte array, for example, 00f067aa0ba902b7. All bytes as zero (0000000000000000) is considered an invalid value.
 		attr :parent_id
 		
 		# An 8-bit field that controls tracing flags such as sampling, trace level, etc. These flags are recommendations given by the caller rather than strict rules.
 		attr :flags
 		
-		# Provides additional vendor-specific trace identification information across different distributed tracing systems. Conveys information about the request’s position in multiple distributed tracing graphs.
+		# Provides additional vendor-specific trace identification information across different distributed tracing systems. Conveys information about the operation's position in multiple distributed tracing graphs.
 		attr :state
 		
 		# Denotes that the caller may have recorded trace data. When unset, the caller did not record trace data out-of-band.
@@ -87,6 +93,7 @@ module Traces
 			"00-#{@trace_id}-#{@parent_id}-#{@flags.to_s(16)}"
 		end
 		
+		# Convert the trace context to a JSON representation, including trace state.
 		def as_json
 			{
 				trace_id: @trace_id,
@@ -97,6 +104,7 @@ module Traces
 			}
 		end
 		
+		# Convert the trace context to a JSON string.
 		def to_json(...)
 			as_json.to_json(...)
 		end

@@ -4,11 +4,10 @@
 # Copyright, 2021-2023, by Samuel Williams.
 
 require_relative '../context'
+
 require 'fiber'
 
-class Fiber
-	attr_accessor :traces_backend_context
-end
+Fiber.attr_accessor :traces_backend_context
 
 module Traces
 	module Backend
@@ -16,10 +15,13 @@ module Traces
 		module Test
 			# A span which validates tag assignment.
 			class Span
+				# Initialize a new span.
+				# @parameter context [Context] The context in which the span is recorded.
 				def initialize(context)
 					@context = context
 				end
 				
+				# @attribute [Context] The context in which the span is recorded.
 				attr :context
 				
 				# Assign some metadata to the span.
@@ -38,6 +40,7 @@ module Traces
 				end
 			end
 			
+			# The test backend interface.
 			module Interface
 				# Trace the given block of code and validate the interface usage.
 				# @parameter name [String] A useful name/annotation for the recorded span.
