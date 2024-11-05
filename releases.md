@@ -1,12 +1,12 @@
 # Releases
 
-## Unreleased
+## v0.14.0
 
 ### Introduce `Traces::Config` to control tracing behavior
 
 There are some reasonable defaults for tracing, but sometimes you want to change them. Adding a `config/traces.rb` file to your project will allow you to do that.
 
-```ruby
+``` ruby
 # config/traces.rb
 
 def prepare

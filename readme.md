@@ -23,6 +23,10 @@ Please see the [project documentation](https://socketry.github.io/traces/) for m
 
 Please see the [project releases](https://socketry.github.io/traces/releases/index) for all releases.
 
+### v0.14.0
+
+  - [Introduce `Traces::Config` to control tracing behavior](https://socketry.github.io/traces/releases/index#introduce-traces::config-to-control-tracing-behavior)
+
 ## Contributing
 
 We welcome contributions to this project.
