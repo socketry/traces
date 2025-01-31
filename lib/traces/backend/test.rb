@@ -88,7 +88,8 @@ module Traces
 				
 				# @returns [Boolean] Whether there is an active trace.
 				def active?
-					!!Fiber.current.traces_backend_context
+					# For the sake of testing, we always enable tracing.
+					true
 				end
 			end
 		end
