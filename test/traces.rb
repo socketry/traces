@@ -66,6 +66,20 @@ describe Traces do
 		expect(Traces::VERSION).to be =~ /\d+\.\d+\.\d+/
 	end
 	
+	with "#active?" do
+		it "is not active by default" do
+			Fiber.new do
+				expect(Traces).not.to be(:active?)
+			end.resume
+		end
+		
+		it "is active within trace block" do
+			Traces.trace('test') do
+				expect(Traces).to be(:active?)
+			end
+		end
+	end
+	
 	describe MyClass do
 		let(:instance) {MyClass.new}
 		

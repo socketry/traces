@@ -10,5 +10,11 @@ module Traces
 	module Backend
 	end
 	
+	# This is a default implementation, which can be replaced by the backend.
+	# @returns [Boolean] Whether there is an active trace.
+	def self.active?
+		!!self.trace_context
+	end
+	
 	Config::DEFAULT.require_backend
 end

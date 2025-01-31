@@ -62,6 +62,11 @@ module Traces
 				def trace_context
 					Fiber.current.traces_backend_context
 				end
+				
+				# @returns [Boolean] Whether there is an active trace.
+				def active?
+					!!Fiber.current.traces_backend_context
+				end
 			end
 		end
 		
