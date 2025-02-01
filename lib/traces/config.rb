@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2024, by Samuel Williams.
+# Copyright, 2024-2025, by Samuel Williams.
 
 module Traces
 	# Represents a configuration for the traces library.
@@ -36,7 +36,8 @@ module Traces
 			if backend = env['TRACES_BACKEND']
 				begin
 					if require(backend)
-						Traces.extend(Backend::Interface)
+						# We ensure that the interface methods replace any existing methods by prepending the module:
+						Traces.singleton_class.prepend(Backend::Interface)
 						
 						return true
 					end
