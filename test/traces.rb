@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2021-2023, by Samuel Williams.
+# Copyright, 2021-2025, by Samuel Williams.
 
-require 'traces'
+require "traces"
 
 class MyClass
 	def my_method(argument)
@@ -35,11 +35,11 @@ end
 
 Traces::Provider(MyClass) do
 	def my_method(argument)
-		Traces.trace('my_method', attributes: {argument: argument}) {super}
+		Traces.trace("my_method", attributes: {argument: argument}) {super}
 	end
 	
 	def my_method_with_result(result)
-		Traces.trace('my_method_with_result') do |span|
+		Traces.trace("my_method_with_result") do |span|
 			super.tap do |result|
 				span["result"] = result
 			end
@@ -47,17 +47,17 @@ Traces::Provider(MyClass) do
 	end
 	
 	def my_method_with_attributes(attributes)
-		Traces.trace('my_method_with_attributes', attributes: attributes) {super}
+		Traces.trace("my_method_with_attributes", attributes: attributes) {super}
 	end
 	
 	def my_method_with_resource(resource)
-		Traces.trace('my_method_with_resource', resource: resource) {super}
+		Traces.trace("my_method_with_resource", resource: resource) {super}
 	end
 end
 
 Traces::Provider(MySubClass) do
 	def my_other_method(argument)
-		Traces.trace('my_other_method', attributes: {argument: argument}) {super}
+		Traces.trace("my_other_method", attributes: {argument: argument}) {super}
 	end
 end
 
@@ -74,7 +74,7 @@ describe Traces do
 		end
 		
 		it "is active within trace block" do
-			Traces.trace('test') do
+			Traces.trace("test") do
 				expect(Traces).to be(:active?)
 			end
 		end
@@ -89,7 +89,7 @@ describe Traces do
 			expect(instance.my_method(10)).to be == 10
 		end
 		
-		with 'result' do
+		with "result" do
 			let(:result) {"result"}
 			
 			it "can invoke trace wrapper" do
@@ -99,7 +99,7 @@ describe Traces do
 			end
 		end
 		
-		with 'attributes' do
+		with "attributes" do
 			let(:attributes) {{"name" => "value"}}
 			
 			it "can invoke trace wrapper" do
@@ -109,23 +109,23 @@ describe Traces do
 			end
 		end
 		
-		with 'resource' do
+		with "resource" do
 			let(:resource) {Object.new}
 			
 			it "can invoke trace wrapper" do
-				expect(Traces).to receive(:trace).with('my_method_with_resource', resource: resource)
+				expect(Traces).to receive(:trace).with("my_method_with_resource", resource: resource)
 				
 				expect(instance.my_method_with_resource(resource)).to be == resource
 			end
 			
 			it "can invoke trace wrapper without resource" do
-				expect(Traces).to receive(:trace).with('my_method_with_resource', resource: nil)
+				expect(Traces).to receive(:trace).with("my_method_with_resource", resource: nil)
 				
 				expect(instance.my_method_with_resource(nil)).to be == nil
 			end
 		end
 		
-		with 'parent trace context' do
+		with "parent trace context" do
 			let(:context) {Traces::Context.local}
 			
 			it "can create child trace context" do
@@ -154,7 +154,7 @@ if defined?(Traces::Backend::Test)
 	describe Traces do
 		let(:instance) {MyClass.new}
 		
-		with 'invalid attribute key' do
+		with "invalid attribute key" do
 			let(:attributes) {{Object.new => "value"}}
 			
 			it "fails with exception" do
@@ -166,7 +166,7 @@ if defined?(Traces::Backend::Test)
 			end
 		end
 		
-		with 'invalid attribute value' do
+		with "invalid attribute value" do
 			let(:value) do
 				Object.new.tap do |object|
 					object.singleton_class.undef_method :to_s
@@ -184,15 +184,15 @@ if defined?(Traces::Backend::Test)
 			end
 		end
 		
-		with 'missing block' do
+		with "missing block" do
 			it "fails with exception" do
 				expect do
-					Traces.trace('foo')
+					Traces.trace("foo")
 				end.to raise_exception(ArgumentError)
 			end		
 		end
 		
-		with 'invalid name' do
+		with "invalid name" do
 			it "fails with exception" do
 				expect do
 					Traces.trace(Object.new) {}

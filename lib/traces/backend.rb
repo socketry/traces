@@ -3,7 +3,7 @@
 # Released under the MIT License.
 # Copyright, 2021-2025, by Samuel Williams.
 
-require_relative 'config'
+require_relative "config"
 
 module Traces
 	# The backend implementation is responsible for recording and reporting traces.

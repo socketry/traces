@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2021-2023, by Samuel Williams.
+# Copyright, 2021-2025, by Samuel Williams.
 
-unless ENV['TRACES_BACKEND']
+unless ENV["TRACES_BACKEND"]
 	abort "No backend specified, tests will fail!"
 end
 
-require 'traces/provider'
+require "traces/provider"
 
 describe Traces::Provider do
 	let(:my_class) {Class.new}
@@ -15,7 +15,7 @@ describe Traces::Provider do
 	it "can yield span" do
 		Traces::Provider(my_class) do
 			def make_span
-				Traces.trace('test.span') do |span|
+				Traces.trace("test.span") do |span|
 					return span
 				end
 			end
@@ -33,7 +33,7 @@ describe Traces::Provider do
 	it "can get current trace context" do
 		Traces::Provider(my_class) do
 			def span
-				Traces.trace('test.span') do |span|
+				Traces.trace("test.span") do |span|
 					return Traces.trace_context
 				end
 			end

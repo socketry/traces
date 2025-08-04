@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2021-2023, by Samuel Williams.
+# Copyright, 2021-2025, by Samuel Williams.
 
-require 'securerandom'
+require "securerandom"
 
 module Traces
 	# A generic representation of the current tracing context.
@@ -12,17 +12,17 @@ module Traces
 		# @parameter parent [String] The parent trace context.
 		# @parameter state [Array(String)] Any attached trace state.
 		def self.parse(parent, state = nil, **options)
-			version, trace_id, parent_id, flags = parent.split('-')
+			version, trace_id, parent_id, flags = parent.split("-")
 			
-			if version == '00'
+			if version == "00"
 				flags = Integer(flags, 16)
 				
 				if state.is_a?(String)
-					state = state.split(',')
+					state = state.split(",")
 				end
 				
 				if state
-					state = state.map{|item| item.split('=')}.to_h
+					state = state.map{|item| item.split("=")}.to_h
 				end
 				
 				self.new(trace_id, parent_id, flags, state, **options)

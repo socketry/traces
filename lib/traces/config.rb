@@ -33,7 +33,7 @@ module Traces
 		
 		# Require a specific traces backend implementation.
 		def require_backend(env = ENV)
-			if backend = env['TRACES_BACKEND']
+			if backend = env["TRACES_BACKEND"]
 				begin
 					if require(backend)
 						# We ensure that the interface methods replace any existing methods by prepending the module:

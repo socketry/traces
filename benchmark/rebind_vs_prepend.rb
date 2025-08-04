@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2021-2022, by Samuel Williams.
+# Copyright, 2021-2025, by Samuel Williams.
 
-require 'benchmark/ips'
+require "benchmark/ips"
 
 class MyClass1
 	def my_method
@@ -72,6 +72,6 @@ Benchmark.ips do |x|
 	x.report("MyClass1", "MyClass1.new.my_method")
 	x.report("MyClass2", "MyClass2.new.my_method")
 	x.report("MyClass3", "MyClass3.new.my_method")
-
+	
 	x.compare!
 end

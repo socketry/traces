@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2023, by Samuel Williams.
+# Copyright, 2023-2025, by Samuel Williams.
 
-require 'traces/provider'
-require 'json'
+require "traces/provider"
+require "json"
 
 describe Traces::Provider do
 	let(:document_root) {File.expand_path(".capture", __dir__)}
-	let(:environment) {{'TRACES_BACKEND' => nil}}
+	let(:environment) {{"TRACES_BACKEND" => nil}}
 	
 	it "runs without traces" do
 		pid = Process.spawn(environment, "bundle", "exec", "bake", "run", chdir: document_root)

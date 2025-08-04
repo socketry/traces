@@ -1,4 +1,8 @@
-# List all available trace providers.
+# frozen_string_literal: true
+
+# Released under the MIT License.
+# Copyright, 2025, by Samuel Williams.
+
 def list
 	available = {}
 	
@@ -10,6 +14,6 @@ def list
 			end
 		end
 	end
-
+	
 	return available
 end

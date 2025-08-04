@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2021-2022, by Samuel Williams.
+# Copyright, 2021-2025, by Samuel Williams.
 # Copyright, 2022, by Felix Yan.
 
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 gemspec
 
@@ -20,7 +20,9 @@ group :test do
 	gem "sus"
 	gem "covered"
 	gem "decode"
+	
 	gem "rubocop"
+	gem "rubocop-socketry"
 	
 	gem "bake-test"
 	gem "bake-test-external"
