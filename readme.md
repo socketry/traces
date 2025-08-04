@@ -23,6 +23,10 @@ Please see the [project documentation](https://socketry.github.io/traces/) for m
 
 Please see the [project releases](https://socketry.github.io/traces/releases/index) for all releases.
 
+### v0.16.0
+
+  - Introduce `traces:provider:list` command to list all available trace providers.
+
 ### v0.14.0
 
   - [Introduce `Traces::Config` to Expose `prepare` Hook](https://socketry.github.io/traces/releases/index#introduce-traces::config-to-expose-prepare-hook)

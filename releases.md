@@ -1,6 +1,6 @@
 # Releases
 
-## Unreleased
+## v0.16.0
 
   - Introduce `traces:provider:list` command to list all available trace providers.
 
