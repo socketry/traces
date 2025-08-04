@@ -4,5 +4,5 @@
 # Copyright, 2021-2025, by Samuel Williams.
 
 module Traces
-	VERSION = "0.16.0"
+	VERSION = "0.16.1"
 end
