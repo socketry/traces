@@ -1,5 +1,9 @@
 # Releases
 
+## Unreleased
+
+  - Remove support for `resource:` keyword argument with no direct replacement – use an attribute instead.
+
 ## v0.16.0
 
   - Introduce `traces:provider:list` command to list all available trace providers.

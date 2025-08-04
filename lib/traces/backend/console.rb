@@ -40,11 +40,11 @@ module Traces
 				# Trace the given block of code and log the execution.
 				# @parameter name [String] A useful name/annotation for the recorded span.
 				# @parameter attributes [Hash] Metadata for the recorded span.
-				def trace(name, resource: nil, attributes: {}, &block)
+				def trace(name, attributes: {}, &block)
 					context = Context.nested(Fiber.current.traces_backend_context)
 					Fiber.current.traces_backend_context = context
 					
-					::Console.logger.info(resource || self, name, attributes)
+					::Console.logger.info(self, name, attributes)
 					
 					if block.arity.zero?
 						yield

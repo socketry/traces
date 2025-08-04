@@ -17,10 +17,6 @@ class MyClass
 	def my_method_with_attributes(attributes)
 		attributes
 	end
-	
-	def my_method_with_resource(resource)
-		resource
-	end
 end
 
 class MySubClass < MyClass
@@ -48,10 +44,6 @@ Traces::Provider(MyClass) do
 	
 	def my_method_with_attributes(attributes)
 		Traces.trace("my_method_with_attributes", attributes: attributes) {super}
-	end
-	
-	def my_method_with_resource(resource)
-		Traces.trace("my_method_with_resource", resource: resource) {super}
 	end
 end
 
@@ -106,22 +98,6 @@ describe Traces do
 				expect(Traces).to receive(:trace)
 				
 				expect(instance.my_method_with_attributes(attributes)).to be == attributes
-			end
-		end
-		
-		with "resource" do
-			let(:resource) {Object.new}
-			
-			it "can invoke trace wrapper" do
-				expect(Traces).to receive(:trace).with("my_method_with_resource", resource: resource)
-				
-				expect(instance.my_method_with_resource(resource)).to be == resource
-			end
-			
-			it "can invoke trace wrapper without resource" do
-				expect(Traces).to receive(:trace).with("my_method_with_resource", resource: nil)
-				
-				expect(instance.my_method_with_resource(nil)).to be == nil
 			end
 		end
 		

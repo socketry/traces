@@ -16,7 +16,7 @@ end
 
 Traces::Provider(App) do
 	def call
-		Traces.trace("my_trace", resource: "my_resource", attributes: {foo: "bar"}) do |span|
+		Traces.trace("my_trace", attributes: {foo: "bar"}) do |span|
 			span[:foo] = "baz"
 			super
 		end

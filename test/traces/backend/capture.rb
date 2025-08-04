@@ -31,7 +31,6 @@ describe Traces::Provider do
 		
 		expect(trace).to have_keys(
 			"name" => be == "my_trace",
-			"resource" => be == "my_resource",
 			"attributes" => be == {"foo" => "baz"},
 		)
 	end

@@ -20,16 +20,14 @@ module Traces
 				# @parameter name [String] A useful name/annotation for the recorded span.
 				# @parameter resource [String] The "resource" that the span is associated with.
 				# @parameter attributes [Hash] Metadata for the recorded span.
-				def initialize(context, name, resource, attributes)
+				def initialize(context, name, attributes)
 					@context = context
 					@name = name
-					@resource = resource
 					@attributes = attributes
 				end
 				
 				attr :context
 				attr :name
-				attr :resource
 				attr :attributes
 				
 				# Assign some metadata to the span.
@@ -43,7 +41,6 @@ module Traces
 				def as_json
 					{
 						name: @name,
-						resource: @resource,
 						attributes: @attributes,
 						context: @context.as_json
 					}
@@ -65,11 +62,11 @@ module Traces
 				# Trace the given block of code and log the execution.
 				# @parameter name [String] A useful name/annotation for the recorded span.
 				# @parameter attributes [Hash] Metadata for the recorded span.
-				def trace(name, resource: nil, attributes: {}, &block)
+				def trace(name, attributes: {}, &block)
 					context = Context.nested(Fiber.current.traces_backend_context)
 					Fiber.current.traces_backend_context = context
 					
-					span = Span.new(context, name, resource, attributes)
+					span = Span.new(context, name, attributes)
 					Capture.spans << span
 					
 					yield span

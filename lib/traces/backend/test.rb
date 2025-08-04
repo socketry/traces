@@ -46,7 +46,7 @@ module Traces
 				# @parameter name [String] A useful name/annotation for the recorded span.
 				# @parameter resource [String] The context in which the trace operation is occuring.
 				# @parameter attributes [Hash] Metadata for the recorded span.
-				def trace(name, resource: nil, attributes: nil, &block)
+				def trace(name, attributes: nil, &block)
 					unless block_given?
 						raise ArgumentError, "No block given!"
 					end
@@ -54,9 +54,6 @@ module Traces
 					unless name.is_a?(String)
 						raise ArgumentError, "Invalid name (must be String): #{name.inspect}!"
 					end
-					
-					# It should be convertable:
-					resource &&= resource.to_s
 					
 					context = Context.nested(Fiber.current.traces_backend_context)
 					

@@ -12,7 +12,6 @@ $ bake traces:capture run traces:capture:list output --format json
 [
   {
     "name": "my_trace",
-    "resource": "my_resource",
     "attributes": {
       "foo": "baz"
     },
@@ -26,7 +25,6 @@ $ bake traces:capture run traces:capture:list output --format json
   },
   {
     "name": "nested",
-    "resource": "#<App:0x00007f0c615981b0>",
     "attributes": {
     },
     "context": {
