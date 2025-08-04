@@ -3,6 +3,7 @@
 # Released under the MIT License.
 # Copyright, 2025, by Samuel Williams.
 
+# List available providers for traces from all loaded gems.
 def list
 	available = {}
 	
