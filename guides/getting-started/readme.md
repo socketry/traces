@@ -101,3 +101,26 @@ Separate implementations are provided for specific APMs:
 - [OpenTelemetry](https://github.com/socketry/traces-backend-open_telemetry)
 - [Datadog](https://github.com/socketry/traces-backend-datadog)
 - [New Relic](https://github.com/newrelic/traces-backend-newrelic)
+
+### Configuration
+
+By default, you may not have many traces available, as they are typically opt-in. To enable more traces, create a `config/traces.rb` file in your project root and require the providers you want to use:
+
+```ruby
+# config/traces.rb
+def prepare
+	require "traces/provider/async"
+	require "traces/provider/async/pool"
+end
+```
+
+To get a list of all available providers, you can use the `bake` command:
+
+~~~ shell
+$ bundle exec bake traces:provider:list
+{"async" => ["traces/provider/async/barrier.rb", "traces/provider/async/task.rb", "traces/provider/async.rb"],
+ "async-pool" => ["traces/provider/async/pool/controller.rb"],
+ "protocol-http2" => ["traces/provider/protocol/http2/framer.rb", "traces/provider/protocol/http2.rb"]}
+~~~
+
+You can then add the providers you want to use to your `config/traces.rb` file.

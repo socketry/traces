@@ -1,5 +1,9 @@
 # Releases
 
+## Unreleased
+
+  - Introduce `traces:provider:list` command to list all available trace providers.
+
 ## v0.14.0
 
 ### Introduce `Traces::Config` to Expose `prepare` Hook
