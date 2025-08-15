@@ -23,6 +23,10 @@ Please see the [project documentation](https://socketry.github.io/traces/) for m
 
 Please see the [project releases](https://socketry.github.io/traces/releases/index) for all releases.
 
+### v0.17.0
+
+  - Remove support for `resource:` keyword argument with no direct replacement – use an attribute instead.
+
 ### v0.16.0
 
   - Introduce `traces:provider:list` command to list all available trace providers.

@@ -1,6 +1,6 @@
 # Releases
 
-## Unreleased
+## v0.17.0
 
   - Remove support for `resource:` keyword argument with no direct replacement – use an attribute instead.
 
