@@ -11,4 +11,6 @@ def run
 	# Fake tests that emit metrics:
 	app = App.new
 	app.call
+	
+	return nil
 end
