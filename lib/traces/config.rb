@@ -13,7 +13,7 @@ module Traces
 		# @returns [Config] The loaded configuration.
 		def self.load(path)
 			config = self.new
-			
+
 			if File.exist?(path)
 				config.instance_eval(File.read(path), path)
 			end
@@ -35,12 +35,12 @@ module Traces
 		def require_backend(env = ENV)
 			if backend = env["TRACES_BACKEND"]
 				begin
-					if require(backend)
-						# We ensure that the interface methods replace any existing methods by prepending the module:
-						Traces.singleton_class.prepend(Backend::Interface)
-						
-						return true
-					end
+					require(backend)
+					
+					# We ensure that the interface methods replace any existing methods by prepending the module:
+					Traces.singleton_class.prepend(Backend::Interface)
+					
+					return true
 				rescue LoadError => error
 					warn "Unable to load traces backend: #{backend.inspect}!"
 				end

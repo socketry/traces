@@ -15,6 +15,8 @@ Please see the [project documentation](https://socketry.github.io/traces/) for m
 
   - [Getting Started](https://socketry.github.io/traces/guides/getting-started/index) - This guide explains how to use `traces` for tracing code execution.
 
+  - [Context Propagation](https://socketry.github.io/traces/guides/context-propagation/index) - This guide explains how to propagate trace context between execution contexts and across service boundaries.
+
   - [Testing](https://socketry.github.io/traces/guides/testing/index) - This guide explains how to test traces in your code.
 
   - [Capture](https://socketry.github.io/traces/guides/capture/index) - This guide explains how to use `traces` for exporting traces from your application. This can be used to document all possible traces.

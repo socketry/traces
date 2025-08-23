@@ -1,5 +1,22 @@
 # Releases
 
+## Unreleased
+
+- **W3C Baggage Support** - Full support for W3C Baggage specification for application-specific context propagation.
+
+### New Context Propagation Interfaces
+
+`Traces#trace_context` and `Traces.trace_context` are insufficient for efficient inter-process tracing when using OpenTelemetry. That is because OpenTelemetry has it's own "Context" concept with arbitrary key-value storage (of which the current span is one such key/value pair). Unfortunately, OpenTelemetry requires those values to be propagated "inter-process" while ignores them for "intra-process" tracing.
+
+Therefore, in order to propagate this context, we introduce 4 new methods:
+
+- `Traces.current_context` - Capture the current trace context for local propagation between execution contexts (threads, fibers).
+- `Traces.with_context(context)` - Execute code within a specific trace context, with automatic restoration when used with blocks.
+- `Traces.inject(headers = nil, context = nil)` - Inject W3C Trace Context headers into a headers hash for distributed propagation.
+- `Traces.extract(headers)` - Extract trace context from W3C Trace Context headers.
+
+The default implementation is built on top of `Traces.trace_context`, however these methods can be replaced by the backend. In that case, the `context` object is opaque, in other words it is library-specific, and you should not assume it is an instance of `Traces::Context`.
+
 ## v0.17.0
 
   - Remove support for `resource:` keyword argument with no direct replacement – use an attribute instead.

@@ -1,6 +1,8 @@
 getting-started:
   order: 1
-testing:
+context-propagation:
   order: 2
-capture:
+testing:
   order: 3
+capture:
+  order: 4
