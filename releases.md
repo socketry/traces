@@ -1,5 +1,9 @@
 # Releases
 
+## Unreleased
+
+  - Don't call `prepare` in `traces/provider.rb`. It can cause circular loading warnings.
+
 ## v0.18.0
 
   - **W3C Baggage Support** - Full support for W3C Baggage specification for application-specific context propagation.
