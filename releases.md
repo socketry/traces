@@ -1,6 +1,6 @@
 # Releases
 
-## Unreleased
+## v0.18.1
 
   - Don't call `prepare` in `traces/provider.rb`. It can cause circular loading warnings.
 

@@ -25,6 +25,10 @@ Please see the [project documentation](https://socketry.github.io/traces/) for m
 
 Please see the [project releases](https://socketry.github.io/traces/releases/index) for all releases.
 
+### v0.18.1
+
+  - Don't call `prepare` in `traces/provider.rb`. It can cause circular loading warnings.
+
 ### v0.18.0
 
   - **W3C Baggage Support** - Full support for W3C Baggage specification for application-specific context propagation.
