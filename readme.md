@@ -15,7 +15,7 @@ Please see the [project documentation](https://socketry.github.io/traces/) for m
 
   - [Getting Started](https://socketry.github.io/traces/guides/getting-started/index) - This guide explains how to use `traces` for tracing code execution.
 
-  - [Context Propagation](https://socketry.github.io/traces/guides/context-propagation/index) - This guide explains how to propagate trace context between execution contexts and across service boundaries.
+  - [Context Propagation](https://socketry.github.io/traces/guides/context-propagation/index) - This guide explains how to propagate trace context between different execution contexts within your application using `Traces.current_context` and `Traces.with_context`.
 
   - [Testing](https://socketry.github.io/traces/guides/testing/index) - This guide explains how to test traces in your code.
 
@@ -24,6 +24,11 @@ Please see the [project documentation](https://socketry.github.io/traces/) for m
 ## Releases
 
 Please see the [project releases](https://socketry.github.io/traces/releases/index) for all releases.
+
+### v0.18.0
+
+  - **W3C Baggage Support** - Full support for W3C Baggage specification for application-specific context propagation.
+  - [New Context Propagation Interfaces](https://socketry.github.io/traces/releases/index#new-context-propagation-interfaces)
 
 ### v0.17.0
 
