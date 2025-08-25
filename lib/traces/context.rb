@@ -122,6 +122,11 @@ module Traces
 			as_json.to_json(...)
 		end
 		
+		# Inject the trace context into the headers, including the `"traceparent"`, `"tracestate"`, and `"baggage"` headers.
+		#
+		# @parameter headers [Hash] The headers hash to inject the trace context into.
+		#
+		# @returns [Hash] The modified headers hash.
 		def inject(headers)
 			headers["traceparent"] = self.to_s
 			
@@ -140,6 +145,7 @@ module Traces
 		#
 		# The `"traceparent"` header is a string representation of the trace context. If it is an Array, the first element is used, otherwise it is used as is.
 		# The `"tracestate"` header is a string representation of the trace state. If it is a String, it is split on commas before being processed.
+		# The `"baggage"` header is a string representation of the baggage. If it is a String, it is split on commas before being processed.
 		#
 		# @parameter headers [Hash] The headers hash containing trace context.
 		# @returns [Context | Nil] The extracted trace context, or nil if no valid context found.
