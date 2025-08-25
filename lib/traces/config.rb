@@ -13,7 +13,7 @@ module Traces
 		# @returns [Config] The loaded configuration.
 		def self.load(path)
 			config = self.new
-
+			
 			if File.exist?(path)
 				config.instance_eval(File.read(path), path)
 			end

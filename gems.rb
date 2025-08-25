@@ -13,6 +13,8 @@ group :maintenance, optional: true do
 	gem "bake-gem"
 	gem "bake-releases"
 	
+	gem "agent-context"
+	
 	gem "utopia-project"
 end
 
